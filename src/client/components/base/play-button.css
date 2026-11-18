@@ -1,0 +1,132 @@
+/* 统一播放按钮：三种场景 player / cover / row。
+ *
+ * 显隐规则由「父级 :hover / :focus-within」驱动，避免每个调用点各写一遍：
+ *   - cover 场景：父级 hover / focus-within 时出现（歌单卡 / MV 封面）；
+ *   - row 场景：表格行 hover 时出现。
+ * 注意：显隐只作用于出现动画，不影响 player 场景（常显）。
+ */
+
+.ncm-play-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease,
+    background 0.16s ease;
+}
+
+/* ---- player：播放栏中央 ---- */
+
+.ncm-play-button--player {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  padding: 0 0 1px 2px;
+  background: var(--player-accent, var(--ncm-accent));
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(236, 65, 65, 0.3);
+}
+
+.ncm-play-button--player:hover:not(:disabled) {
+  background: #d63a3a;
+  transform: scale(1.04);
+}
+
+.ncm-play-button--player:disabled {
+  opacity: 0.45;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* 窄屏（与播放栏 760px 断点一致）中央按钮略缩小。 */
+@media (max-width: 760px) {
+  .ncm-play-button--player {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* ---- cover：歌单卡 / MV 封面 ---- */
+
+.ncm-play-button--cover {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ncm-accent);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  transform: translateY(6px);
+  /* 隐藏时不参与命中测试，否则隐形按钮会截获封面右下角的点击（把「打开卡片」变「播放」）。 */
+  pointer-events: none;
+}
+
+/* 父级 hover / 键盘聚焦时显现并恢复可点击（歌单卡 / MV 封面两种宿主）。 */
+.ncm-cover-card:hover .ncm-play-button--cover,
+.ncm-cover-card:focus-within .ncm-play-button--cover,
+.ncm-mv-card:hover .ncm-play-button--cover,
+.ncm-mv-card:focus-within .ncm-play-button--cover {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.ncm-play-button--cover:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ---- row：歌曲表格行 ---- */
+
+.ncm-play-button--row {
+  flex: 0 0 auto;
+  width: 25px;
+  height: 25px;
+  margin-left: 2px;
+  border-radius: 7px;
+  background: var(--ncm-hover);
+  color: var(--ncm-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ncm-song-table tbody tr:hover .ncm-play-button--row:not(:disabled) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ncm-play-button--row:hover:not(:disabled) {
+  background: rgba(236, 65, 65, 0.1);
+}
+
+.ncm-play-button--row:disabled {
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+}
+
+/* ---- 加载转圈（颜色按场景：player 白、cover/row 红） ---- */
+
+.ncm-play-button__spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ncm-play-button-spin 0.8s linear infinite;
+}
+
+.ncm-play-button--cover .ncm-play-button__spinner,
+.ncm-play-button--row .ncm-play-button__spinner {
+  border-color: rgba(236, 65, 65, 0.28);
+  border-top-color: var(--ncm-accent);
+}
+

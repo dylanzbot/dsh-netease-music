@@ -1,0 +1,577 @@
+/* 「我的」页面样式 */
+
+.ncm-mine {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  background: var(--ncm-page);
+  overscroll-behavior: contain;
+}/* ---- 背景氛围 ---- */
+
+.ncm-mine__bg {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ncm-mine__bg-img {
+  position: absolute;
+  top: -140px;
+  right: -120px;
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  background-color: var(--ncm-page);
+  background-size: cover;
+  background-position: center;
+  filter: blur(70px) saturate(1.1);
+  opacity: 0.16;
+}
+
+.ncm-mine__bg-glow {
+  position: absolute;
+  top: -240px;
+  left: -160px;
+  width: 640px;
+  height: 560px;
+  border-radius: 50%;
+  background-color: var(--ncm-page);
+  background-image: radial-gradient(circle, rgba(236, 65, 65, 0.13), transparent 68%);
+}
+
+body[data-ds-dark-theme] .ncm-mine__bg-img {
+  opacity: 0.12;
+}
+
+body[data-ds-dark-theme] .ncm-mine__bg-glow {
+  background-image: radial-gradient(circle, rgba(236, 65, 65, 0.12), transparent 68%);
+}
+
+/* ---- 内容框架 ---- */
+
+.ncm-mine__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 26px 92px 58px 34px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero：黑胶封套                                                      */
+/* ------------------------------------------------------------------ */
+
+.ncm-hero {
+  position: relative;
+  min-height: 250px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #1a1210;
+  color: #ffffff;
+  isolation: isolate;
+  box-shadow:
+    0 30px 70px rgba(28, 18, 14, 0.26),
+    0 6px 18px rgba(28, 18, 14, 0.12);
+}
+
+.ncm-hero__bg {
+  position: absolute;
+  z-index: 0;
+  inset: -36px;
+  background-color: #1a1210;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) saturate(1.18) brightness(0.72);
+  transform: scale(1.08);
+  opacity: 0.95;
+}
+
+.ncm-hero__veil {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    linear-gradient(102deg, rgba(14, 10, 9, 0.95) 0%, rgba(20, 13, 11, 0.82) 44%, rgba(20, 13, 11, 0.52) 100%),
+    radial-gradient(120% 150% at 100% 0%, rgba(236, 65, 65, 0.22), transparent 48%);
+}
+
+.ncm-hero__veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: repeating-linear-gradient(90deg,
+      transparent 0 118px,
+      rgba(255, 255, 255, 0.018) 118px 119px);
+}
+
+.ncm-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-height: 250px;
+  box-sizing: border-box;
+  padding: 30px 34px;
+}
+
+/* ---- 头像 + 背后露出的黑胶 ---- */
+
+.ncm-avatar__wrap {
+  position: relative;
+  flex: 0 0 auto;
+  width: 118px;
+  height: 118px;
+}
+
+.ncm-avatar {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 118px;
+  height: 118px;
+  box-sizing: border-box;
+  border-radius: 26px;
+  object-fit: cover;
+  background: #2a2321;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.45),
+    0 0 0 5px rgba(255, 255, 255, 0.045);
+}
+
+.ncm-avatar .ncm-image__fallback-text {
+  font-family: var(--ncm-font-display);
+  font-size: 42px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* 头像右侧探出的黑胶唱片。 */
+.ncm-avatar__vinyl {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: -27px;
+  width: 106px;
+  height: 106px;
+  margin-top: -53px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(236, 65, 65, 0.62) 0 8px, transparent 9px),
+    repeating-radial-gradient(circle at 50% 50%, #181719 0 2px, #0d0d0f 2.5px 4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+}
+
+/* ---- 身份信息 ---- */
+
+.ncm-mine__identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.ncm-mine__name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ncm-mine__name {
+  max-width: 440px;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--ncm-font-display);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.36);
+}
+
+.ncm-auth__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  color: #f2d49b;
+}
+
+.ncm-auth__icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ncm-mine__meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ncm-mine__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ncm-mine__meta-item b {
+  color: rgba(255, 255, 255, 0.94);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-mine__meta-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.ncm-mine__signature {
+  display: -webkit-box;
+  max-width: 600px;
+  margin: 14px 0 0;
+  padding-left: 12px;
+  overflow: hidden;
+  border-left: 2px solid rgba(236, 65, 65, 0.62);
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12.5px;
+  line-height: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* ---- 右侧统计 ---- */
+
+.ncm-hero__stats {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: stretch;
+  margin-left: auto;
+  padding-left: 22px;
+  border-left: 0.5px solid rgba(255, 255, 255, 0.13);
+}
+
+.ncm-mine__stat {
+  min-width: 68px;
+  padding: 0 11px;
+  text-align: center;
+}
+
+.ncm-mine__stat+.ncm-mine__stat {
+  border-left: 0.5px solid rgba(255, 255, 255, 0.09);
+}
+
+.ncm-mine__stat b {
+  display: block;
+  font-family: var(--ncm-font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-mine__stat span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* 搜索框                                                              */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* 分区                                                                */
+/* ------------------------------------------------------------------ */
+
+.ncm-section {
+  margin-top: 38px;
+}
+
+.ncm-section__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ncm-section__bar {
+  width: 4px;
+  height: 19px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--ncm-accent), var(--ncm-brand));
+  box-shadow: 0 2px 8px rgba(236, 65, 65, 0.32);
+}
+
+.ncm-section__title {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: 0.01em;
+}
+
+.ncm-section__count {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--ncm-hover);
+  color: var(--ncm-muted);
+  font-size: 10px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-section__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  padding: 4px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--ncm-muted);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.16s ease;
+}
+
+.ncm-section__more:hover {
+  color: var(--ncm-accent);
+}
+
+.ncm-section__more svg {
+  transition: transform 0.2s ease;
+}
+
+.ncm-section__more-icon--down {
+  transform: rotate(-90deg);
+}
+
+/* ---- 歌单网格间距（卡片样式在 components/playlist-card.css） ---- */
+
+.ncm-playlist-grid {
+  margin-top: 18px;
+}
+
+/* ---- 空状态 ---- */
+
+.ncm-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 42px 20px;
+  border: 1px dashed var(--ncm-hairline);
+  border-radius: 18px;
+  color: var(--ncm-muted);
+  font-size: 12.5px;
+  background: var(--ncm-card);
+  background: color-mix(in srgb, var(--ncm-card) 46%, transparent);
+}
+
+.ncm-empty p {
+  margin: 0;
+}
+
+/* ---- 页脚 ---- */
+
+.ncm-mine__foot {
+  margin-top: 52px;
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  opacity: 0.66;
+}
+
+/* ------------------------------------------------------------------ */
+/* 响应式                                                              */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 1060px) {
+  .ncm-mine__inner {
+    padding-right: 84px;
+  }
+
+  .ncm-hero__content {
+    gap: 22px;
+    padding: 26px 28px;
+  }
+
+  .ncm-mine__name {
+    max-width: 300px;
+    font-size: 28px;
+  }
+
+  .ncm-mine__stat {
+    min-width: 64px;
+    padding: 0 12px;
+  }
+
+  .ncm-mine__stat b {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 860px) {
+  .ncm-mine__inner {
+    padding: 22px 80px 50px 24px;
+  }
+
+  .ncm-hero__content {
+    flex-wrap: wrap;
+  }
+
+  .ncm-hero__stats {
+    width: 100%;
+    margin-left: 0;
+    padding: 14px 0 0;
+    border-left: 0;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .ncm-mine__stat {
+    flex: 1;
+    text-align: left;
+    padding: 0 16px;
+  }
+
+  .ncm-mine__stat:first-child {
+    padding-left: 0;
+  }
+
+  .ncm-avatar__wrap,
+  .ncm-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+  }
+
+  .ncm-avatar__vinyl {
+    width: 86px;
+    height: 86px;
+    margin-top: -43px;
+    right: -20px;
+  }
+
+  .ncm-mine__name {
+    max-width: 340px;
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ncm-mine__inner {
+    padding: 18px 18px 96px;
+  }
+
+  .ncm-hero {
+    border-radius: 22px;
+  }
+
+  .ncm-hero__content {
+    padding: 22px;
+    gap: 18px;
+  }
+
+  .ncm-avatar__wrap,
+  .ncm-avatar {
+    width: 82px;
+    height: 82px;
+    border-radius: 19px;
+  }
+
+  .ncm-avatar .ncm-image__fallback-text {
+    font-size: 30px;
+  }
+
+  .ncm-avatar__vinyl {
+    display: none;
+  }
+
+  .ncm-mine__name {
+    max-width: 210px;
+    font-size: 23px;
+  }
+
+  .ncm-mine__signature {
+    display: none;
+  }
+
+  .ncm-mine__stat {
+    min-width: 0;
+    padding: 0 8px;
+  }
+
+  .ncm-mine__stat b {
+    font-size: 20px;
+  }
+
+  .ncm-mine__stat span {
+    font-size: 9px;
+  }
+
+  .ncm-section {
+    margin-top: 30px;
+  }
+}
+
+/* 关注 / 粉丝：可点击打开关系弹窗。 */
+.ncm-mine__meta-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  transition: color 0.16s ease;
+}
+
+.ncm-mine__meta-link:hover {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.ncm-mine__meta-link:hover b {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ncm-mine__meta-link:focus-visible {
+  outline: 2px solid var(--ncm-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

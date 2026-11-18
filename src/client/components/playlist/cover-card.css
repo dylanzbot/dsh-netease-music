@@ -1,0 +1,125 @@
+/* 通用封面卡片（歌单卡片 / 专辑卡片共用）。
+ * 结构、封面、角标、播放按钮、hover 全部一致；底部文案由 footer 插槽决定。 */
+
+.ncm-cover-card {
+  min-width: 0;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ncm-cover-card:focus-visible {
+  outline: 2px solid var(--ncm-accent);
+  outline-offset: 3px;
+}
+
+.ncm-cover-card:hover {
+  transform: translateY(-3px);
+}
+
+.ncm-cover-card__cover {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #eae5de, #d5cec4);
+  box-shadow:
+    0 12px 28px rgba(24, 18, 14, 0.11),
+    inset 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+}
+
+body[data-ds-dark-theme] .ncm-cover-card__cover {
+  background: linear-gradient(145deg, #282a2f, #1d1e22);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.05);
+}
+
+.ncm-cover-card--active .ncm-cover-card__cover {
+  outline: 2px solid var(--ncm-brand);
+  outline-offset: 2px;
+}
+
+.ncm-cover-card__cover-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ncm-cover-card:hover .ncm-cover-card__cover-img {
+  transform: scale(1.045);
+}
+
+.ncm-cover-card__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 7, 7, 0.55) 0%, rgba(8, 7, 7, 0) 44%);
+  opacity: 0.72;
+  transition: opacity 0.2s ease;
+}
+
+.ncm-cover-card:hover .ncm-cover-card__shade {
+  opacity: 0.94;
+}
+
+.ncm-cover-card__count {
+  position: absolute;
+  left: 9px;
+  bottom: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(6px);
+}
+
+.ncm-cover-card__heart {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgba(194, 12, 12, 0.9);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(120, 8, 8, 0.34);
+}
+
+.ncm-cover-card--liked .ncm-cover-card__cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, rgba(236, 65, 65, 0.16), transparent 52%);
+  pointer-events: none;
+}
+
+.ncm-cover-card__title {
+  display: -webkit-box;
+  margin-top: 10px;
+  overflow: hidden;
+  max-height: 38px;
+  color: var(--ncm-ink);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 19px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.ncm-cover-card__sub {
+  margin-top: 3px;
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+  line-height: 16px;
+}

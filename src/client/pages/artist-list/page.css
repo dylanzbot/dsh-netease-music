@@ -1,0 +1,199 @@
+/* 「歌手」列表页样式 */
+
+.ncm-artist-list {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  background:
+    radial-gradient(70% 40% at 60% -8%, rgba(236, 65, 65, 0.05), transparent 60%),
+    var(--ncm-page);
+  overscroll-behavior: contain;
+}.ncm-artist-list__inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 30px 30px 90px;
+}
+
+.ncm-artist-list__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ncm-artist-list__title {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-family: var(--ncm-font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.ncm-artist-list__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 1 260px;
+  margin-left: auto;
+}
+
+.ncm-artist-list__search-icon {
+  position: absolute;
+  left: 11px;
+  display: inline-flex;
+  color: var(--ncm-muted);
+  pointer-events: none;
+}
+
+.ncm-artist-list__search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 30px 8px 32px;
+  border: 0.5px solid var(--ncm-hairline);
+  border-radius: 999px;
+  background: var(--ncm-search-bg);
+  color: var(--ncm-ink);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.ncm-artist-list__search-input:focus {
+  border-color: var(--ncm-accent);
+}
+
+.ncm-artist-list__search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.ncm-artist-list__search-clear {
+  position: absolute;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ncm-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ncm-artist-list__search-clear:hover {
+  color: var(--ncm-ink);
+}
+
+.ncm-artist-list__initials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 6px 0 14px;
+  border-bottom: 0.5px solid var(--ncm-hairline);
+  margin-bottom: 20px;
+}
+
+.ncm-artist-list__initial {
+  min-width: 24px;
+  padding: 3px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ncm-muted);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ncm-artist-list__initial:hover {
+  color: var(--ncm-ink);
+  background: var(--ncm-hover);
+}
+
+.ncm-artist-list__initial--active {
+  color: var(--ncm-brand);
+  font-weight: 700;
+  background: var(--ncm-hover);
+}
+
+.ncm-artist-list__section {
+  margin-top: 4px;
+}
+
+.ncm-artist-list__section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ncm-artist-list__section-head h2 {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ncm-artist-list__count {
+  color: var(--ncm-muted);
+  font-size: 11px;
+}
+
+.ncm-artist-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 20px 16px;
+}
+
+.ncm-artist-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.ncm-artist-card:hover {
+  background: var(--ncm-hover);
+  transform: translateY(-2px);
+}
+
+.ncm-artist-card__avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.ncm-artist-card__name {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ncm-ink);
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ncm-artist-card__meta {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ncm-muted);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ncm-artist-list__hint {
+  padding: 30px 0;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  text-align: center;
+}

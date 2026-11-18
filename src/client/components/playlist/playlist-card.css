@@ -1,0 +1,15 @@
+/* 歌单卡片网格容器（首页 / 我的共用）。
+ * 卡片本体的样式已统一到 cover-card.css，这里只保留网格布局。 */
+
+.ncm-playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 24px 18px;
+}
+
+@media (max-width: 640px) {
+  .ncm-playlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(126px, 1fr));
+    gap: 18px 12px;
+  }
+}

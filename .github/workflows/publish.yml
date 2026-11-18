@@ -1,0 +1,135 @@
+# 发 npm 流水线：由 release-please 打出的 tag 触发（tag 驱动，非 push main 驱动）
+
+name: Publish to npm
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: '要发布的 tag 或分支（例如 v0.1.0）；留空则用当前分支'
+        required: false
+        type: string
+
+concurrency:
+  group: npm-publish-ncm
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify NPM_TOKEN present
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "::error::NPM_TOKEN secret 缺失。请在 仓库 → Settings → Secrets and variables → Actions 添加（npm 端 'Read and write' 权限）。"
+            exit 1
+          fi
+          echo "NPM_TOKEN 已配置（长度 ${#NPM_TOKEN}）。"
+
+      - name: Publish to npm
+        # 显式指定官方 registry + --access public（本项目为公开非 scoped 包）。
+        run: npm publish --access public --registry=https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # 用 registry 回读真实版本，而不是只喊一句"已发布"。
+      # 三种结果：
+      #   ① 等于 package.json 版本        → 真正发布成功 ✅
+      #   ② 0.0.0-stage                  → 包刚创建，真实版本进了 staged 队列待审批
+      #   ③ 查不到 / 版本对不上           → 真失败（token 权限、版本已存在、网络）
+      # 用「指数退避 + 总时长上限」轮询，覆盖 registry 最终一致的同步延迟。
+      - name: Verify published version
+        run: |
+          set -euo pipefail
+          PKG="$(node -p "require('./package.json').name")"
+          EXPECTED="$(node -p "require('./package.json').version")"
+          REGISTRY="https://registry.npmjs.org"
+
+          echo "包名：${PKG}"
+          echo "期望版本：${EXPECTED}"
+
+          DELAYS=(5 10 15 20 30 30 30 30)
+          TOTAL_WAIT=0
+
+          for idx in "${!DELAYS[@]}"; do
+            i=$((idx + 1))
+            JSON="$(npm view "${PKG}" versions dist-tags --json --registry="${REGISTRY}" 2>/dev/null || true)"
+
+            if [ -z "${JSON}" ]; then
+              STATE="missing"
+              DETAIL="registry 上查不到该包"
+            else
+              read -r STATE DETAIL <<<"$(printf '%s' "${JSON}" | node -e '
+                let s = "";
+                process.stdin.on("data", c => (s += c)).on("end", () => {
+                  let d;
+                  try { d = JSON.parse(s); } catch { console.log("missing\tJSON 解析失败"); return; }
+                  const latest = typeof d === "object" && d["dist-tags"] ? d["dist-tags"].latest : undefined;
+                  const versions = Array.isArray(d.versions) ? d.versions : [];
+                  const clean = versions.filter(v => v !== "0.0.0-stage");
+                  let state;
+                  if (!latest) state = "missing";
+                  else if (latest === "0.0.0-stage") state = "staged";
+                  else state = "published";
+                  console.log(state + "\tlatest=" + (latest || "<空>") + " versions=" + JSON.stringify(versions) + " 正式版本=" + JSON.stringify(clean));
+                });
+              '
+              )"
+
+              if [ "${STATE}" = "published" ] && printf '%s' "${DETAIL}" | grep -q "latest=${EXPECTED} "; then
+                echo "✅ 发布成功：${PKG}@${EXPECTED} 已是 dist-tags.latest"
+                echo "   ${DETAIL}"
+                exit 0
+              fi
+            fi
+
+            if printf '%s' "${DETAIL}" | grep -q "\"${EXPECTED}\""; then
+              echo "✅ 发布成功：${PKG}@${EXPECTED} 已存在于 registry"
+              echo "   ${DETAIL}"
+              exit 0
+            fi
+
+            if [ "${STATE}" = "staged" ]; then
+              echo "::warning::${PKG} 目前只有占位版本 0.0.0-stage —— 说明包已创建，但 ${EXPECTED} 还在 staged 审批队列里。"
+              echo "   批准命令：npm login --registry=${REGISTRY} && npm stage list ${PKG} --registry=${REGISTRY} && npm stage approve <stage-id> --registry=${REGISTRY}"
+              exit 0
+            fi
+
+            echo "第 ${i}/${#DELAYS[@]} 次查询：${STATE} | ${DETAIL} —— ${DELAYS[$idx]}s 后重试"
+            sleep "${DELAYS[$idx]}"
+            TOTAL_WAIT=$((TOTAL_WAIT + DELAYS[idx]))
+          done
+
+          echo "::error::发布后校验失败：package.json=${EXPECTED}，registry 上读到 ${DETAIL:-<空>}。"
+          echo "   已等待约 ${TOTAL_WAIT}s 仍查不到，基本可排除同步延迟。"
+          echo "   排查方向：① NPM_TOKEN 是否带 Bypass 2FA；② 该版本是否已存在；③ registry 是否连得上。"
+          echo "   可去 Actions → Publish to npm → Run workflow，填 v${EXPECTED} 重跑校验。"
+          exit 1

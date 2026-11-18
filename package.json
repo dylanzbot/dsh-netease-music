@@ -1,0 +1,86 @@
+{
+  "name": "@dylanzbot/dsh-netease-music",
+  "version": "1.0.0",
+  "description": "DeepSeek Harness (dsh) Web plugin: NetEase Cloud Music sidebar panel — login via QR code, search and play.",
+  "type": "module",
+  "license": "MIT",
+  "author": "dylanzbot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanzbot/dsh-netease-music.git"
+  },
+  "homepage": "https://github.com/dylanzbot/dsh-netease-music#readme",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.0-rc.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.4"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@testing-library/react": "^16.3.3",
+    "@tsdown/css": "^0.23.7",
+    "@types/node": "^22.10.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^18.3.12",
+    "husky": "^9.1.7",
+    "jsdom": "^31.0.1",
+    "lightningcss": "^1.33.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rolldown": "^1.3.0",
+    "tsdown": "^0.23.7",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "cordis",
+    "netease-cloud-music"
+  ],
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

@@ -1,0 +1,60 @@
+/* 通用图片组件：图片 / 默认兜底 / 加载失败兜底。 */
+
+.ncm-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.04));
+  color: var(--ncm-muted, #72737a);
+}
+
+.ncm-image__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ncm-image__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.ncm-image__fallback-text {
+  font-family: var(--ncm-font-display, Georgia, serif);
+  font-size: 1.35em;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ncm-image--avatar {
+  border-radius: 50%;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+}
+
+.ncm-image--avatar .ncm-image__fallback-text {
+  color: var(--ncm-muted, #72737a);
+}
+
+.ncm-image--playlist .ncm-image__fallback {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.22), transparent 52%),
+    linear-gradient(145deg, #d95c55, #8d1c1c);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.ncm-image--song .ncm-image__fallback {
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+  color: var(--ncm-muted, #72737a);
+}
+
+.ncm-image--player .ncm-image__fallback {
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+  color: var(--ncm-muted, #72737a);
+}

@@ -1,0 +1,191 @@
+.ncm-quality-popover__chip {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border: 0.5px solid var(--ncm-hairline);
+  border-radius: 6px;
+  color: var(--ncm-muted);
+  font-size: 10px;
+  line-height: 15px;
+  white-space: nowrap;
+}
+
+/* 音质切换浮层。 */
+
+.ncm-quality-popover {
+  /* 不设 position:relative，让弹层以 .ncm-player 为包含块，统一 bottom 距离 */
+  flex: 0 0 auto;
+}
+
+.ncm-quality-popover__trigger {
+  min-width: 42px;
+  background: var(--ncm-paper);
+  color: var(--ncm-ink);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+
+/* 会员档位：边框 / 文字与 NcmVipTag（.ncm-tag--vip）保持一致 */
+.ncm-quality-popover__trigger--vip {
+  border-color: rgba(236, 65, 65, 0.28);
+  color: var(--ncm-accent);
+}
+
+/* 超级会员档位：边框 / 文字与 NcmSvipTag（.ncm-tag--svip）保持一致 */
+.ncm-quality-popover__trigger--svip {
+  border-color: rgba(176, 132, 39, 0.42);
+  color: #b08427;
+}
+
+body[data-ds-dark-theme] .ncm-quality-popover__trigger--svip {
+  border-color: rgba(226, 180, 106, 0.46);
+  color: #e2b46a;
+}
+
+/*
+ * free 档位（标准 / 较高）全程中性：文字 --ncm-ink、边框 --ncm-hairline，
+ * 展开、选中、hover 都不得变红；hover 只加灰色底。
+ * 会员 / 超级会员档位的 hover 才用红色底。
+ */
+.ncm-quality-popover__trigger--free:hover:not(:disabled),
+.ncm-quality-popover__trigger--free.ncm-quality-popover__trigger--open {
+  background: var(--ncm-hover);
+  color: var(--ncm-ink);
+  border-color: var(--ncm-hairline);
+}
+
+.ncm-quality-popover__trigger--vip:hover:not(:disabled),
+.ncm-quality-popover__trigger--svip:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ncm-accent) 12%, transparent);
+}
+
+.ncm-quality-popover__trigger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ncm-quality-popover__chip--static {
+  cursor: default;
+}
+
+/* 定位 / 背景 / 描边 / 阴影 / z-index 由 .ncm-popover 提供 */
+.ncm-quality-popover__pop {
+  width: 244px;
+  padding: 8px;
+}
+
+.ncm-quality-popover__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px 8px 8px;
+  color: var(--ncm-ink);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.ncm-quality-popover__hint-line {
+  margin: 0 0 5px;
+}
+
+.ncm-quality-popover__hint-line:last-child {
+  margin-bottom: 0;
+}
+
+.ncm-quality-popover__option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 6px 30px 6px 9px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ncm-ink);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ncm-quality-popover__option:hover:not(:disabled) {
+  background: var(--ncm-hover);
+}
+
+/* 通用选中态：免费 / 黑胶会员档位用主题红 */
+.ncm-quality-popover__option--active {
+  color: var(--ncm-accent);
+}
+
+/* 选中态按档位区分颜色：黑胶超级会员档位用金色，与 NcmSvipTag 一致 */
+.ncm-quality-popover__option--active.ncm-quality-popover__option--tier-vip {
+  color: var(--ncm-accent);
+}
+
+.ncm-quality-popover__option--active.ncm-quality-popover__option--tier-svip {
+  color: #b08427;
+}
+
+body[data-ds-dark-theme] .ncm-quality-popover__option--active.ncm-quality-popover__option--tier-svip {
+  color: #e2b46a;
+}
+
+.ncm-quality-popover__option--locked {
+  opacity: 0.5;
+}
+
+.ncm-quality-popover__option:disabled {
+  cursor: default;
+}
+
+.ncm-quality-popover__option-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ncm-quality-popover__option-label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+}
+
+.ncm-quality-popover__option-desc {
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  line-height: 14px;
+}
+
+.ncm-quality-popover__option-check {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 12px;
+}
+
+.ncm-quality-popover__stream {
+  margin: 8px 4px 0;
+  padding-top: 8px;
+  border-top: 0.5px solid var(--ncm-hairline);
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  line-height: 15px;
+}
+
+.ncm-quality-popover__stream strong {
+  color: var(--ncm-ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-quality-popover__note {
+  margin: 4px 4px 2px;
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  line-height: 15px;
+}

@@ -1,0 +1,292 @@
+/* 「首页 / 发现音乐」样式。 */
+
+.ncm-home {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  background:
+    radial-gradient(70% 46% at 50% -10%, rgba(236, 65, 65, 0.08), transparent 64%),
+    var(--ncm-page);
+  overscroll-behavior: contain;
+}.ncm-home__inner {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 30px 92px 58px 34px;
+}
+
+/* ---- 头部 ---- */
+
+.ncm-home__head {
+  position: relative;
+  padding: 8px 4px 0;
+}
+
+.ncm-home__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ncm-accent);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.ncm-home__title {
+  margin: 12px 0 0;
+  color: var(--ncm-ink);
+  font-family: var(--ncm-font-display);
+  font-size: 37px;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: 0.015em;
+}
+
+.ncm-home__sub {
+  margin: 8px 0 0;
+  color: var(--ncm-muted);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.ncm-home__date {
+  position: absolute;
+  top: 10px;
+  right: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--ncm-hover);
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+}
+
+/* ---- 分区 ---- */
+
+.ncm-home__section {
+  margin-top: 44px;
+}
+
+.ncm-home__section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ncm-home__section-head h2 {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.ncm-home__grid {
+  margin-top: 18px;
+}
+
+/* ---- 新歌列表 ---- */
+
+.ncm-home__song-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 22px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ncm-home__song {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.16s ease;
+}
+
+.ncm-home__song:hover {
+  background: var(--ncm-hover);
+}
+
+.ncm-home__song-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border-radius: 11px;
+  background: var(--ncm-hover);
+  color: var(--ncm-muted);
+}
+
+.ncm-home__song-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ncm-home__song-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ncm-home__song-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--ncm-ink);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ncm-home__song-meta {
+  color: var(--ncm-muted);
+  font-size: 11px;
+}
+
+.ncm-home__song-time {
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-home__song-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(236, 65, 65, 0.1);
+  color: var(--ncm-accent);
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.ncm-home__song:hover .ncm-home__song-play {
+  opacity: 1;
+}
+
+/* ---- 骨架屏 / 错误 ---- */
+
+.ncm-home__skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 24px 18px;
+  margin-top: 18px;
+}
+
+.ncm-home__skeleton-cover {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  background: var(--ncm-hover);
+  animation: ncm-home-pulse 1.4s ease-in-out infinite;
+}
+
+.ncm-home__skeleton-title {
+  display: block;
+  width: 64%;
+  height: 11px;
+  margin-top: 12px;
+  border-radius: 6px;
+  background: var(--ncm-hover);
+  animation: ncm-home-pulse 1.4s ease-in-out infinite;
+}
+
+.ncm-home__song-skeletons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 22px;
+  margin-top: 14px;
+}
+
+.ncm-home__song-skeleton {
+  height: 62px;
+  border-radius: 13px;
+  background: var(--ncm-hover);
+  animation: ncm-home-pulse 1.4s ease-in-out infinite;
+}
+
+.ncm-home__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 42px 20px;
+  border: 1px dashed var(--ncm-hairline);
+  border-radius: 18px;
+  color: var(--ncm-muted);
+  font-size: 12.5px;
+}
+
+.ncm-home__error p {
+  margin: 0;
+}
+
+.ncm-home .ncm-mine__foot {
+  margin-top: 48px;
+}
+
+/* ---- 响应式 ---- */
+
+@media (max-width: 1060px) {
+  .ncm-home__inner {
+    padding-right: 84px;
+  }
+
+  .ncm-home__title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 860px) {
+  .ncm-home__inner {
+    padding: 24px 80px 50px 24px;
+  }
+
+  .ncm-home__song-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ncm-home__song-skeletons {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ncm-home__inner {
+    padding: 20px 18px 96px;
+  }
+
+  .ncm-home__title {
+    font-size: 27px;
+  }
+
+  .ncm-home__date {
+    display: none;
+  }
+
+  .ncm-home__skeleton-grid {
+    grid-template-columns: repeat(auto-fill, minmax(126px, 1fr));
+    gap: 18px 12px;
+  }
+}

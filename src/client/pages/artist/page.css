@@ -1,0 +1,288 @@
+/* 歌手详情页样式 */
+
+.ncm-artist {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  /* 切 Tab 时内容高度变化会让滚动条出现 / 消失，始终预留滚动条空间，
+     避免内容宽度跳变（抖动的主要来源）。 */
+  scrollbar-gutter: stable;
+  background:
+    radial-gradient(70% 42% at 50% -6%, rgba(236, 65, 65, 0.06), transparent 62%),
+    var(--ncm-page);
+  overscroll-behavior: contain;
+}
+
+/* Tab 内容区：骨架屏 / 空态阶段也保持足够高度，滚动区域稳定，
+   避免切 Tab 时滚动条消失又出现（与 .ncm-artist 的 scrollbar-gutter 配合）。 */
+.ncm-artist__tab-panel {
+  min-height: 55vh;
+}.ncm-artist__back-row {
+  padding: 16px 30px 0;
+}
+
+/* 皮肤由 .ncm-icon-btn 提供；这里只留布局 / 尺寸。 */
+.ncm-artist__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+
+.ncm-artist__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 8px 30px 90px;
+}
+
+/* ---- 头部 ---- */
+
+.ncm-artist__head {
+  display: flex;
+  gap: 24px;
+  padding: 12px 0 26px;
+}
+
+.ncm-artist__avatar {
+  flex: 0 0 168px;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+}
+
+.ncm-artist__meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 名字 + 关注按钮同一行，按钮紧跟名字右侧。 */
+.ncm-artist__name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.ncm-artist__name {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-family: var(--ncm-font-display);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.ncm-artist__alias {
+  margin: 0;
+  color: var(--ncm-muted);
+  font-size: 13px;
+}
+
+.ncm-artist__stats {
+  display: flex;
+  gap: 16px;
+  color: var(--ncm-muted);
+  font-size: 12px;
+}
+
+.ncm-artist__stats b {
+  color: var(--ncm-ink);
+  font-weight: 700;
+}
+
+.ncm-artist__desc {
+  position: relative;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.ncm-artist__desc p {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  white-space: pre-line;
+}
+
+.ncm-artist__desc--expanded p {
+  -webkit-line-clamp: unset;
+  display: block;
+}
+
+.ncm-artist__desc-toggle {
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ncm-accent);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ncm-artist__follow {
+  padding: 5px 16px;
+  border: 1px solid var(--ncm-brand);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ncm-brand);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.ncm-artist__follow:hover {
+  opacity: 0.82;
+}
+
+.ncm-artist__follow--on {
+  border-color: var(--ncm-hairline);
+  color: var(--ncm-muted);
+}
+
+/* ---- Tab 行（左侧标签 + 右侧播放全部） ---- */
+
+.ncm-artist__tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 0.5px solid var(--ncm-hairline);
+  margin-bottom: 12px;
+}
+
+.ncm-artist__tabs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px;
+}
+
+.ncm-artist__tabs-actions {
+  flex: 0 0 auto;
+  padding-bottom: 6px;
+}
+
+.ncm-artist__tab {
+  position: relative;
+  padding: 8px 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ncm-muted);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ncm-artist__tab:hover {
+  color: var(--ncm-ink);
+}
+
+.ncm-artist__tab--active {
+  color: var(--ncm-ink);
+  font-weight: 700;
+}
+
+.ncm-artist__tab--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ncm-brand);
+}
+
+.ncm-artist__play-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ncm-brand);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ncm-artist__play-all:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.ncm-artist__play-all:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- 专辑卡片网格（一行 6 个，卡片本体样式来自 cover-card.css） ---- */
+
+.ncm-artist__albums {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 22px 16px;
+  margin-top: 6px;
+}
+
+@media (max-width: 880px) {
+  .ncm-artist__albums {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .ncm-artist__albums {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---- MV ---- */
+
+/* MV 网格容器；卡片本体（封面 / 内联播放器）见 mv-card.css。 */
+.ncm-artist__mvs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px 16px;
+}
+
+/* ---- 通用 ---- */
+
+.ncm-artist__load-more {
+  display: block;
+  width: 100%;
+  margin: 14px 0 4px;
+  padding: 9px 0;
+  border: 0.5px solid var(--ncm-hairline);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ncm-muted);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ncm-artist__load-more:hover:not(:disabled) {
+  color: var(--ncm-ink);
+  background: var(--ncm-hover);
+}
+
+.ncm-artist__hint {
+  padding: 30px 0;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  text-align: center;
+}

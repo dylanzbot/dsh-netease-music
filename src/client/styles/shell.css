@@ -1,0 +1,128 @@
+/* ==========================================================================
+ * 插件外壳：容器 / 内容区 / 启动页 / 错误页
+ * ==========================================================================
+ */
+
+/* ---- 插件容器 ---- */
+.ncm-panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  font-family: var(--ncm-font-body);
+  font-size: 14px;
+  color: var(--dsw-foreground, var(--ncm-ink));
+}
+
+/* ---- 应用外壳：内容区 ---- */
+.ncm-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--ncm-page);
+}
+
+.ncm-shell__main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ---- 启动页 ---- */
+.ncm-boot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  height: 100%;
+  background:
+    radial-gradient(90% 100% at 50% 0%, rgba(236, 65, 65, 0.06), transparent 60%),
+    var(--ncm-page);
+  color: var(--ncm-muted);
+  font-size: 13px;
+}
+
+.ncm-boot__disc {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #2a2a2e 0 12px, transparent 12.5px),
+    repeating-radial-gradient(circle at 50% 50%, #19191c 0 2px, #101012 2.5px 4px);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  animation: ncm-boot-spin 3.2s linear infinite;
+}
+
+.ncm-boot__disc::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ncm-accent);
+  box-shadow: 0 0 16px rgba(236, 65, 65, 0.7);
+}
+
+.ncm-boot__text {
+  letter-spacing: 0.08em;
+}
+
+/* ---- 错误页 ---- */
+.ncm-fatal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 32px;
+  background: var(--ncm-page);
+}
+
+.ncm-fatal__card {
+  max-width: 360px;
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--ncm-card);
+  border: 0.5px solid var(--ncm-hairline);
+  box-shadow: 0 24px 60px rgba(20, 16, 14, 0.12);
+  text-align: center;
+}
+
+.ncm-fatal__card h2 {
+  margin: 0 0 8px;
+  color: var(--ncm-ink);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ncm-fatal__card p {
+  margin: 0 0 18px;
+  color: var(--ncm-muted);
+  font-size: 13px;
+  line-height: 21px;
+}
+
+.ncm-fatal__retry {
+  height: 34px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ncm-accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ncm-fatal__retry:hover {
+  background: var(--ncm-brand);
+}

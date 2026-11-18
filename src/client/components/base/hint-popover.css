@@ -1,0 +1,65 @@
+/* 轻量提示浮层（Hover Popover）。 */
+
+.ncm-hint {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ncm-hint__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ncm-muted);
+  cursor: help;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.ncm-hint__trigger:hover,
+.ncm-hint__trigger--open {
+  background: var(--ncm-hover);
+  color: var(--ncm-accent);
+}
+
+/* 定位以外的基础样式；背景 / 描边 / 阴影来自 .ncm-popover */
+.ncm-hint__bubble {
+  left: 50%;
+  display: block;
+  width: 244px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+  line-height: 17px;
+  text-align: left;
+  box-shadow: 0 14px 36px rgba(20, 16, 14, 0.2);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.ncm-hint__bubble--top {
+  bottom: calc(100% + 8px);
+}
+
+.ncm-hint__bubble--bottom {
+  top: calc(100% + 8px);
+}
+
+.ncm-hint__bubble--right {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.ncm-hint__bubble strong {
+  color: var(--ncm-ink);
+  font-weight: 600;
+}

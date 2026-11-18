@@ -1,0 +1,118 @@
+/* 右侧悬浮导航（首页 / 歌手 / 我的 / 退出）。
+ *
+ * 从全局 styles.css 抽出：导航是组件级样式，随 nav-rail 组件一起维护。
+ */
+
+.ncm-nav-rail {
+  position: absolute;
+  /*
+   * 不设 z-index。
+   *
+   * 弹层（音质 / 队列 / 搜索下拉等）大多挂在 .ncm-player / .ncm-search 里，
+   * 而这些祖先各自带 z-index（播放栏 25、搜索框 5）。一旦导航栏也带 z-index，
+   * 它的层叠上下文就会和播放栏的平级比较，导航栏必然压住弹层。
+   *
+   * 让导航栏留在 z-index:auto 的普通流里（仍用 absolute 定位和 transform 居中），
+   * 带 z-index 的弹层就永远绘制在它之上；导航栏自身仍能盖住无层级的页面内容。
+   */
+  top: 50%;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 5px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.76);
+  background: color-mix(in srgb, var(--ncm-paper) 76%, transparent);
+  backdrop-filter: blur(10px);
+  border: 0.5px solid var(--ncm-hairline);
+  box-shadow:
+    0 18px 42px rgba(20, 16, 14, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px);
+  transform: translateY(-50%);
+}
+
+body[data-ds-dark-theme] .ncm-nav-rail {
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ncm-nav-rail__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 46px;
+  padding: 8px 0 7px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--ncm-muted);
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 14px;
+  cursor: pointer;
+  transition:
+    color 0.16s ease,
+    background 0.16s ease;
+}
+
+.ncm-nav-rail__btn:hover,
+.ncm-nav-rail__btn--active {
+  background: rgba(236, 65, 65, 0.1);
+  color: var(--ncm-accent);
+}
+
+.ncm-nav-rail__btn:hover .ncm-nav-rail__icon,
+.ncm-nav-rail__btn--active .ncm-nav-rail__icon {
+  filter: drop-shadow(0 2px 6px rgba(236, 65, 65, 0.28));
+}
+
+.ncm-nav-rail__icon {
+  display: inline-flex;
+}
+
+.ncm-nav-rail__sep {
+  width: 22px;
+  height: 0.5px;
+  margin: 4px 0;
+  background: var(--ncm-hairline);
+}
+
+.ncm-nav-rail__btn--quiet {
+  opacity: 0.68;
+}
+
+.ncm-nav-rail__btn--quiet:hover {
+  opacity: 1;
+  color: var(--ncm-brand);
+  background: rgba(194, 12, 12, 0.07);
+}
+
+/* 窄屏：右侧竖排导航改为底部横排，避免遮挡内容。 */
+@media (max-width: 640px) {
+  .ncm-nav-rail {
+    top: auto;
+    right: 50%;
+    bottom: 92px;
+    flex-direction: row;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: 18px;
+    transform: translateX(50%);
+  }
+
+  .ncm-nav-rail__btn {
+    width: 44px;
+    padding: 6px 0 5px;
+  }
+
+  .ncm-nav-rail__sep {
+    width: 0.5px;
+    height: 24px;
+    margin: 0 4px;
+  }
+}

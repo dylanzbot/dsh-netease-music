@@ -1,0 +1,44 @@
+/* 二次确认弹窗。 */
+
+.ncm-confirm-modal {
+  width: 320px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ncm-confirm-modal__body {
+  padding: 22px 22px 16px;
+}
+
+.ncm-confirm-modal__title {
+  margin: 0 0 8px;
+  color: var(--ncm-ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.ncm-confirm-modal__message {
+  margin: 0;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  line-height: 19px;
+}
+
+.ncm-confirm-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 16px 14px;
+}
+
+/* 按钮的视觉皮肤（描边 / 底色 / hover / 禁用 / 变体）统一来自 styles/controls.css
+ * 的 .ncm-btn，这里只保留本组件的尺寸。 */
+.ncm-confirm-modal__btn {
+  min-width: 68px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+

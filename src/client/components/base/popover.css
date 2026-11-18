@@ -1,0 +1,16 @@
+/**
+ * 通用浮层基础样式。
+ *
+ * 只提供「浮层外壳」的公共部分（定位、背景、描边、阴影、圆角）；
+ * 具体位置 / 尺寸 / 内边距由使用方的 className 覆盖。
+ */
+
+.ncm-popover {
+  position: absolute;
+  z-index: 1; /* 实际值由 usePopupZIndex 以内联样式覆盖 */
+  box-sizing: border-box;
+  border: 0.5px solid var(--ncm-hairline);
+  border-radius: 14px;
+  background: var(--ncm-paper);
+  box-shadow: 0 18px 44px rgba(20, 16, 14, 0.22);
+}

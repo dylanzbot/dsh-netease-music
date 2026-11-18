@@ -1,0 +1,151 @@
+/* ==========================================================================
+ * 全局动效：所有 @keyframes + 页面切换过渡 + reduced-motion 降级
+ * ==========================================================================
+ */
+
+/* ---- 页面切换：页面根元素挂载时淡入上移 ---- */
+@keyframes ncm-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ncm-home,
+.ncm-mine,
+.ncm-artist,
+.ncm-playlist-detail,
+.ncm-artist-list,
+.ncm-login {
+  animation: ncm-page-in var(--ncm-motion-normal) var(--ncm-motion-ease) both;
+}
+
+/* ---- Tab 切换：歌手详情页内容区 ---- */
+@keyframes ncm-tab-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ncm-artist__tab-panel {
+  animation: ncm-tab-in var(--ncm-motion-normal) var(--ncm-motion-ease) both;
+}
+
+/* ---- 启动页唱片 ---- */
+@keyframes ncm-boot-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- 抽屉 ---- */
+@keyframes ncm-drawer-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ncm-drawer-in-right {
+  from { transform: translateX(24px); }
+  to { transform: translateX(0); }
+}
+
+@keyframes ncm-drawer-in-left {
+  from { transform: translateX(-24px); }
+  to { transform: translateX(0); }
+}
+
+/* ---- 弹窗 ---- */
+@keyframes ncm-modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ncm-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---- Toast ---- */
+@keyframes ncm-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---- 播放按钮 spinner / 播放中音柱 ---- */
+@keyframes ncm-play-button-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ncm-playing-bars-wave {
+  from { transform: scaleY(0.22); }
+  to { transform: scaleY(1); }
+}
+
+/* ---- 骨架屏呼吸 / 首页骨架 pulse ---- */
+@keyframes ncm-skeleton-pulse {
+  0%,
+  100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes ncm-home-pulse {
+  0%,
+  100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+/* ---- 登录页唱片轨道 ---- */
+@keyframes ncm-login-orbit {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- 统一降级：系统要求减少动态时关掉所有动画 ---- */
+@media (prefers-reduced-motion: reduce) {
+  .ncm-home,
+  .ncm-mine,
+  .ncm-artist,
+  .ncm-playlist-detail,
+  .ncm-artist-list,
+  .ncm-login,
+  .ncm-artist__tab-panel,
+  .ncm-boot__disc,
+  .ncm-drawer__overlay,
+  .ncm-drawer--right,
+  .ncm-drawer--left,
+  .ncm-modal__overlay,
+  .ncm-modal,
+  .ncm-toast,
+  .ncm-playing-bars__bar,
+  .ncm-play-button__spinner,
+  .ncm-login__art::before,
+  .ncm-login__art > svg,
+  .ncm-home__skeleton-cover,
+  .ncm-home__skeleton-title,
+  .ncm-home__song-skeleton,
+  .ncm-skeleton__cover,
+  .ncm-skeleton__cover-card,
+  .ncm-skeleton__line {
+    animation: none !important;
+  }
+}

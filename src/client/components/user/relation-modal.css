@@ -1,0 +1,151 @@
+/* 关注 / 粉丝弹窗。 */
+
+.ncm-relation-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(620px, calc(100vw - 48px));
+  max-height: min(620px, calc(100vh - 48px));
+  padding: 0;
+  overflow: hidden;
+}
+
+.ncm-relation-modal__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 18px 22px 14px;
+  border-bottom: 0.5px solid var(--ncm-hairline);
+}
+
+.ncm-relation-modal__head h2 {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ncm-relation-modal__head span {
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+}
+
+/* 皮肤由 .ncm-icon-btn 提供；这里只留尺寸 / 字号 / 定位。 */
+.ncm-relation-modal__close {
+  margin-left: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  font-size: 18px;
+}
+
+
+.ncm-relation-modal__body {
+  flex: 1;
+  min-height: 0;
+  overscroll-behavior: contain;
+  padding: 4px 10px 10px;
+}
+
+.ncm-relation-modal__state {
+  padding: 54px 20px;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ---- 右侧操作区 ---- */
+
+.ncm-relation-modal__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 75px;
+  min-width: 75px;
+}
+
+.ncm-relation-modal__action--fan {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+/* hover 时把文字替换成「取关」按钮。 */
+.ncm-relation-modal__action--swap {
+  position: relative;
+  min-height: 26px;
+}
+
+.ncm-relation-modal__days {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--ncm-muted);
+  font-size: 10px;
+  line-height: 15px;
+  white-space: nowrap;
+  transition: opacity 0.14s ease;
+}
+
+.ncm-relation-modal__swap-btn {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid rgba(236, 65, 65, 0.35);
+  border-radius: 6px;
+  background: rgba(236, 65, 65, 0.08);
+  color: var(--ncm-accent);
+  font-family: inherit;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+
+.ncm-relation-modal__action--swap:hover .ncm-relation-modal__days {
+  opacity: 0;
+}
+
+.ncm-relation-modal__action--swap:hover .ncm-relation-modal__swap-btn {
+  display: inline-flex;
+}
+
+.ncm-relation-modal__swap-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* 三个操作按钮共用尺寸；视觉皮肤由 styles/controls.css 的 .ncm-btn 提供。 */
+.ncm-relation-modal__follow-btn,
+.ncm-relation-modal__unfollow-btn,
+.ncm-relation-modal__remove-btn {
+  width: 75px;
+  height: 24px;
+  padding: 0;
+  border-radius: 6px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* 取关按钮：强调色淡底描边（非标准皮肤，单独定义） */
+.ncm-relation-modal__unfollow-btn {
+  border: 0.5px solid rgba(236, 65, 65, 0.35);
+  background: rgba(236, 65, 65, 0.06);
+  color: var(--ncm-accent);
+}
+
+.ncm-relation-modal__unfollow-btn:hover:not(:disabled) {
+  background: rgba(236, 65, 65, 0.12);
+}
+
+.ncm-relation-modal__unfollow-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* 移除按钮：hover 文字变强调色 */
+.ncm-relation-modal__remove-btn:hover:not(:disabled) {
+  color: var(--ncm-accent);
+}
+

@@ -1,0 +1,208 @@
+/* 专辑弹窗：顶部专辑介绍 + 剩余空间全部是歌曲表格。 */
+
+.ncm-album-modal__overlay {
+  /* 轻 tint 让大弹窗更聚焦；不加 blur，避免暗色主题下背景层次发糊。 */
+  background: rgba(16, 13, 12, 0.18);
+}
+
+.ncm-album-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(860px, calc(100vw - 48px));
+  height: min(700px, calc(100vh - 48px));
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ---- 专辑介绍 ---- */
+
+.ncm-album-modal__intro {
+  position: relative;
+  display: flex;
+  gap: 20px;
+  flex: 0 0 auto;
+  padding: 22px 24px 18px;
+  border-bottom: 0.5px solid var(--ncm-hairline);
+}
+
+.ncm-album-modal__cover {
+  flex: 0 0 132px;
+  width: 132px;
+  height: 132px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
+}
+
+.ncm-album-modal__meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 30px;
+}
+
+.ncm-album-modal__title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ncm-album-modal__type {
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border: 0.5px solid var(--ncm-accent);
+  border-radius: 4px;
+  color: var(--ncm-accent);
+  font-size: 10.5px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.ncm-album-modal__title-row h2 {
+  margin: 0;
+  overflow: hidden;
+  color: var(--ncm-ink);
+  font-family: var(--ncm-font-display);
+  font-size: 21px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ncm-album-modal__facts {
+  margin: 0;
+  overflow: hidden;
+  color: var(--ncm-muted);
+  font-size: 11.5px;
+  line-height: 1.6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 介绍全文默认收起两行；展开后在限高内滚动，不挤掉下面的歌曲表格。 */
+.ncm-album-modal__desc {
+  color: var(--ncm-muted);
+  font-size: 11.5px;
+  line-height: 1.7;
+}
+
+.ncm-album-modal__desc p {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  white-space: pre-line;
+}
+
+.ncm-album-modal__desc--expanded p {
+  display: block;
+  -webkit-line-clamp: unset;
+  max-height: 132px;
+  overscroll-behavior: contain;
+}
+
+.ncm-album-modal__desc-toggle {
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ncm-accent);
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.ncm-album-modal__actions {
+  margin-top: auto;
+  padding-top: 2px;
+}
+
+.ncm-album-modal__play-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ncm-brand);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ncm-album-modal__play-all:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.ncm-album-modal__play-all:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 皮肤由 .ncm-icon-btn 提供；这里只留尺寸 / 字号 / 定位。 */
+.ncm-album-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  font-size: 18px;
+}
+
+
+/* ---- 剩下的全是歌曲表格 ---- */
+
+.ncm-album-modal__songs {
+  flex: 1;
+  min-height: 0;
+  overscroll-behavior: contain;
+  padding: 0 18px 18px;
+  background: var(--ncm-paper);
+}
+
+.ncm-album-modal__songs .ncm-song-table__wrap {
+  margin-top: 14px;
+}
+
+.ncm-album-modal__state {
+  padding: 52px 0;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  .ncm-album-modal__intro {
+    gap: 12px;
+    padding: 14px 14px 12px;
+  }
+
+  .ncm-album-modal__cover {
+    flex-basis: 80px;
+    width: 80px;
+    height: 80px;
+  }
+
+  /* 窄宽度下不再让整列文字给关闭按钮留白，只让标题行避开右上角的 ×。 */
+  .ncm-album-modal__meta {
+    padding-right: 0;
+  }
+
+  .ncm-album-modal__title-row {
+    padding-right: 26px;
+  }
+
+  .ncm-album-modal__title-row h2 {
+    font-size: 17px;
+  }
+
+  .ncm-album-modal__songs {
+    padding: 0 10px 12px;
+  }
+}

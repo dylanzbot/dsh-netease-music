@@ -1,0 +1,272 @@
+/* MV 播放器控制栏样式（自绘，替代原生 video 控制条）。
+ * 从 mv-card.css 拆出，类名前缀统一为 ncm-mv-controls__。
+ * 显隐由父级 .ncm-mv-card__player--show-controls 驱动（规则在 mv-card.css）。 */
+
+/* ---- 自绘控制栏 ---- */
+
+.ncm-mv-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 26px 12px 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+}
+
+/* 显示控制栏的条件由 JS 在 player 上挂 --show-controls。 */
+
+
+.ncm-mv-controls__progress-row {
+  display: flex;
+  align-items: center;
+}
+
+.ncm-mv-controls__progress,
+.ncm-mv-controls__volume-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.28);
+  background-image: linear-gradient(var(--ncm-accent), var(--ncm-accent));
+  background-repeat: no-repeat;
+  outline: none;
+  cursor: pointer;
+}
+
+.ncm-mv-controls__progress {
+  width: 100%;
+}
+
+.ncm-mv-controls__progress::-webkit-slider-thumb,
+.ncm-mv-controls__volume-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.ncm-mv-controls__progress::-moz-range-thumb,
+.ncm-mv-controls__volume-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.ncm-mv-controls__bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* ---- 容器查询：按卡片实际宽度逐级隐藏次要控件，避免窄卡控制栏挤压 ---- */
+
+/* 卡片较窄（网格小卡）时：隐藏时间、画中画，缩短音量滑条。音量滑条始终保留可调。 */
+@container (max-width: 260px) {
+  .ncm-mv-controls__bar-row {
+    gap: 6px;
+  }
+
+  .ncm-mv-controls__time,
+  .ncm-mv-controls__pip-btn {
+    display: none;
+  }
+
+  .ncm-mv-controls__volume-range {
+    width: 40px;
+  }
+}
+
+/* 更窄时：进一步缩短音量滑条（仍保留），极端窄隐藏下载按钮避免挤压。 */
+@container (max-width: 190px) {
+  .ncm-mv-controls__volume-range {
+    width: 28px;
+  }
+
+  .ncm-mv-controls__download-btn {
+    display: none;
+  }
+}
+
+.ncm-mv-controls__spacer {
+  flex: 1;
+}
+
+.ncm-mv-controls__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.ncm-mv-controls__btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.ncm-mv-controls__ctrl-text {
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+.ncm-mv-controls__time {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ncm-mv-controls__volume {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ncm-mv-controls__volume-range {
+  width: 56px;
+}
+
+/* ---- 非全屏：hover 弹出竖向音量条（与播放栏音量一致） ---- */
+
+.ncm-mv-controls__volume-pop {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 浮层外壳定位：贴着按钮向上弹出。高度按视频高度自适应（cqh），确保不被视频顶裁断。
+ * z-index 由 NcmPopover 分配。 */
+.ncm-mv-controls__volume-menu {
+  left: 50%;
+  bottom: calc(100% + 6px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+  /* 高度严格随卡宽自适应：视频高≈62.5cqi，音量条取 36cqi（≈视频高的 58%），
+   * 扣掉控制栏与间隙后刚好不超出视频顶，任何尺寸的卡同比例都不被裁断。 */
+  height: 36cqi;
+  padding: 6px 0;
+  border-radius: 10px;
+  background: rgba(28, 28, 30, 0.96);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.44);
+  transform: translateX(-50%);
+}
+
+.ncm-mv-controls__volume-vertical {
+  width: 4px;
+  flex: 1;
+  min-height: 24px;
+  margin: 3px 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  border-radius: 4px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.ncm-mv-controls__volume-vertical::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid rgba(28, 28, 30, 0.96);
+  border-radius: 50%;
+  background: var(--ncm-accent);
+  box-shadow: 0 3px 8px rgba(236, 65, 65, 0.35);
+  cursor: grab;
+}
+
+.ncm-mv-controls__volume-vertical::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+
+.ncm-mv-controls__volume-vertical::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(28, 28, 30, 0.96);
+  border-radius: 50%;
+  background: var(--ncm-accent);
+  cursor: grab;
+}
+
+/* 菜单锚点 + 浮层菜单（清晰度 / 倍速）。 */
+.ncm-mv-controls__menu-anchor {
+  position: relative;
+}
+
+.ncm-mv-controls__menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 76px;
+  padding: 6px;
+  border-radius: 10px;
+  background: rgba(28, 28, 30, 0.96);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.44);
+  backdrop-filter: blur(10px);
+  z-index: 4;
+}
+
+.ncm-mv-controls__menu-item {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ncm-mv-controls__menu-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.ncm-mv-controls__menu-item--active {
+  color: var(--ncm-accent);
+  font-weight: 600;
+}
+
+/* 键盘可达性：滑块移除默认 outline 后补可见焦点环 */
+.ncm-mv-controls__progress:focus-visible,
+.ncm-mv-controls__volume-range:focus-visible,
+.ncm-mv-controls__volume-vertical:focus-visible {
+  outline: 2px solid var(--ncm-brand);
+  outline-offset: 3px;
+}

@@ -1,0 +1,49 @@
+/* 「正在播放」波动线条。 */
+
+.ncm-playing-bars {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 20px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: var(--ncm-accent, #ec4141);
+}
+
+.ncm-playing-bars__bar {
+  display: block;
+  width: 2px;
+  height: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transform: scaleY(0.3);
+  transform-origin: center;
+  animation: ncm-playing-bars-wave 0.9s ease-in-out infinite alternate;
+}
+
+.ncm-playing-bars__bar:nth-child(1) {
+  animation-delay: -0.7s;
+}
+
+.ncm-playing-bars__bar:nth-child(2) {
+  animation-delay: -0.35s;
+}
+
+.ncm-playing-bars__bar:nth-child(3) {
+  animation-delay: -0.55s;
+}
+
+.ncm-playing-bars__bar:nth-child(4) {
+  animation-delay: -0.15s;
+}
+
+.ncm-playing-bars--paused {
+  opacity: 0.45;
+}
+
+.ncm-playing-bars--paused .ncm-playing-bars__bar {
+  animation-play-state: paused;
+  transform: scaleY(0.32);
+}
+

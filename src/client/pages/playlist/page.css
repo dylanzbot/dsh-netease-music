@@ -1,0 +1,369 @@
+/* 歌单详情页（参考网易云 PC 歌单页）。 */
+
+.ncm-playlist-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background:
+    radial-gradient(80% 46% at 55% -10%, rgba(236, 65, 65, 0.06), transparent 62%),
+    var(--ncm-page);
+}
+
+.ncm-playlist-detail__back-row {
+  flex: 0 0 auto;
+  padding: 16px 90px 0 30px;
+}
+
+/* 皮肤由 .ncm-icon-btn 提供；这里只留布局 / 尺寸。 */
+.ncm-playlist-detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+
+.ncm-playlist-detail__layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ---- 左侧歌单导航 ---- */
+
+.ncm-playlist-detail__side {
+  flex: 0 0 242px;
+  box-sizing: border-box;
+  padding: 8px 12px 36px 26px;
+  border-right: 0.5px solid var(--ncm-hairline);
+}.ncm-playlist-detail__side-section + .ncm-playlist-detail__side-section {
+  margin-top: 20px;
+}
+
+.ncm-playlist-detail__side-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 6px 7px;
+  color: var(--ncm-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ncm-playlist-detail__side-section h3 b {
+  color: var(--ncm-muted);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.ncm-playlist-detail__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ncm-playlist-detail__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ncm-playlist-detail__nav-item:hover,
+.ncm-playlist-detail__nav-item--active {
+  background: var(--ncm-accent);
+  color: #fff;
+}
+
+.ncm-playlist-detail__nav-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--ncm-hover);
+  color: var(--ncm-muted);
+}
+
+.ncm-playlist-detail__nav-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ncm-playlist-detail__nav-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ncm-playlist-detail__nav-name {
+  overflow: hidden;
+  color: var(--ncm-ink);
+  font-size: 11.5px;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ncm-playlist-detail__nav-item:hover .ncm-playlist-detail__nav-name,
+.ncm-playlist-detail__nav-item--active .ncm-playlist-detail__nav-name {
+  color: #fff;
+}
+
+.ncm-playlist-detail__nav-count {
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  line-height: 13px;
+}
+
+.ncm-playlist-detail__nav-item:hover .ncm-playlist-detail__nav-count,
+.ncm-playlist-detail__nav-item--active .ncm-playlist-detail__nav-count {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ---- 右侧内容 ---- */
+
+.ncm-playlist-detail__main {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 90px 48px 28px;
+}
+
+.ncm-playlist-detail__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+  padding: 18px 0 26px;
+}
+
+.ncm-playlist-detail__cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 178px;
+  height: 178px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--ncm-hover);
+  color: var(--ncm-muted);
+  box-shadow:
+    0 18px 38px rgba(20, 16, 14, 0.16),
+    0 0 0 0.5px rgba(0, 0, 0, 0.06);
+}
+
+.ncm-playlist-detail__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ncm-playlist-detail__meta {
+  min-width: 0;
+  padding-top: 0;
+}
+
+/* 「歌单」徽章 + 标题同处一行，垂直居中对齐 */
+.ncm-playlist-detail__title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ncm-playlist-detail__type {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--ncm-accent);
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.ncm-playlist-detail__meta h1 {
+  min-width: 0;
+  margin: 0;
+  color: var(--ncm-ink);
+  font-family: var(--ncm-font-display);
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.3;
+  word-break: break-all;
+}
+
+.ncm-playlist-detail__meta p {
+  margin: 0;
+  color: var(--ncm-muted);
+  font-size: 11.5px;
+  line-height: 20px;
+}
+
+/* 歌单标签 chips */
+.ncm-playlist-detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.ncm-playlist-detail__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 9px;
+  border: 1px solid var(--ncm-border, rgba(0, 0, 0, 0.12));
+  border-radius: 999px;
+  color: var(--ncm-muted);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+/* 歌单简介（可多行，最多折叠 3 行） */
+.ncm-playlist-detail__meta .ncm-playlist-detail__desc {
+  margin: 9px 0 0;
+  color: var(--ncm-muted);
+  font-size: 11.5px;
+  line-height: 19px;
+  white-space: pre-line;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ncm-playlist-detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* 播放 / 收藏按钮共用尺寸；视觉皮肤由 styles/controls.css 的 .ncm-btn 提供。 */
+.ncm-playlist-detail__play,
+.ncm-playlist-detail__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 15px;
+  font-size: 11.5px;
+}
+
+.ncm-playlist-detail__play:disabled,
+.ncm-playlist-detail__action:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ---- 歌曲列表 ---- */
+
+.ncm-playlist-detail__songs {
+  border-top: 2px solid var(--ncm-brand);
+  padding-top: 14px;
+}
+
+.ncm-playlist-detail__songs-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.ncm-playlist-detail__songs-head h2 {
+  margin: 0;
+  color: var(--ncm-ink);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ncm-playlist-detail__songs-head span {
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+}
+
+
+.ncm-playlist-detail__loading,
+.ncm-playlist-detail__empty {
+  padding: 50px 20px;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ---- 响应式 ---- */
+
+@media (max-width: 900px) {
+  .ncm-playlist-detail__side {
+    flex-basis: 196px;
+    padding-left: 16px;
+  }
+
+  .ncm-playlist-detail__main {
+    padding-right: 60px;
+    padding-left: 20px;
+  }
+
+  .ncm-playlist-detail__cover {
+    width: 142px;
+    height: 142px;
+  }
+}
+
+@media (max-width: 720px) {
+  .ncm-playlist-detail__side {
+    display: none;
+  }
+
+  .ncm-playlist-detail__main {
+    padding: 0 18px 36px;
+  }
+
+  .ncm-playlist-detail__back-row {
+    padding: 12px 18px 0;
+  }
+
+  .ncm-playlist-detail__head {
+    gap: 16px;
+  }
+
+  .ncm-playlist-detail__cover {
+    width: 104px;
+    height: 104px;
+  }
+
+  .ncm-playlist-detail__meta h1 {
+    font-size: 19px;
+  }
+
+  .ncm-playlist-detail__action {
+    display: none;
+  }
+}
+
+/* 已收藏态：文字 / 边框用主题红，提示可取消收藏 */
+.ncm-playlist-detail__action--on {
+  border-color: rgba(236, 65, 65, 0.4);
+  color: var(--ncm-accent);
+}

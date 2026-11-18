@@ -1,0 +1,13 @@
+/* ==========================================================================
+ * @dylanzbot/dsh-netease-music 浏览器侧样式总入口
+ * ==========================================================================
+ *
+ * 顺序很重要：tokens 必须在最前（其它文件都引用其变量）。
+ */
+
+@import './tokens.css';
+@import './motion.css';
+@import './shell.css';
+@import './controls.css';
+@import './scroll.css';
+@import './utilities.css';

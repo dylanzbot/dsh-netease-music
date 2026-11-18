@@ -1,0 +1,146 @@
+/* 搜索框（首页 + 我的共用）。 */
+
+/* 搜索框外层容器（首页 / 我的共用，统一宽度与间距）。 */
+.ncm-search-box {
+  position: relative;
+  z-index: 5;
+  width: min(680px, 100%);
+  margin: 26px auto 8px;
+  padding: 0 18px;
+  box-sizing: border-box;
+}
+
+
+.ncm-search {
+  position: relative;
+  width: 100%;
+}
+
+.ncm-search__field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 46px;
+  padding: 0 16px 0 18px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ncm-paper) 72%, transparent);
+  border: 0.5px solid var(--ncm-hairline);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
+  transition: border-color 0.18s ease;
+}
+
+.ncm-search--lg .ncm-search__field {
+  height: 56px;
+  padding: 0 20px 0 22px;
+}
+
+.ncm-search__field:hover {
+  border-color: rgba(236, 65, 65, 0.28);
+  box-shadow: 0 0 0 3px rgba(236, 65, 65, 0.06);
+}
+
+.ncm-search__field:focus-within {
+  border-color: rgba(236, 65, 65, 0.48);
+  box-shadow: 0 0 0 4px rgba(236, 65, 65, 0.08);
+}
+
+.ncm-search__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--ncm-muted);
+  transition: color 0.18s ease;
+}
+
+.ncm-search__field:focus-within .ncm-search__icon {
+  color: var(--ncm-accent);
+}
+
+.ncm-search__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ncm-ink);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.ncm-search--lg .ncm-search__input {
+  font-size: 15px;
+}
+
+.ncm-search__input::placeholder {
+  color: var(--ncm-muted);
+  opacity: 0.8;
+}
+
+.ncm-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.ncm-search__kbd {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border: 0.5px solid var(--ncm-hairline);
+  border-radius: 6px;
+  color: var(--ncm-muted);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.ncm-search__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  padding: 0 0 1px;
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--ncm-muted);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ncm-search__clear:hover {
+  background: rgba(0, 0, 0, 0.14);
+  color: var(--ncm-ink);
+}
+
+
+/* ---- 暗色 ---- */
+
+body[data-ds-dark-theme] .ncm-search__field {
+  background: color-mix(in srgb, var(--ncm-paper) 72%, transparent);
+}
+
+body[data-ds-dark-theme] .ncm-search__field:hover,
+body[data-ds-dark-theme] .ncm-search__field:focus-within {
+  box-shadow: 0 0 0 3px rgba(236, 65, 65, 0.1);
+}
+
+body[data-ds-dark-theme] .ncm-search__clear {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+@media (max-width: 640px) {
+  .ncm-search-box {
+    margin-top: 20px;
+    padding: 0 8px;
+  }
+}
+

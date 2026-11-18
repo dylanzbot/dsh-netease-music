@@ -1,0 +1,29 @@
+/* ==========================================================================
+ * 统一滚动条：让插件里的滚动条和 dsh 壳子（对话区 / 其它面板）长成一样。
+ * ==========================================================================
+ * 机制：用 `overflow: auto` 把「原生滚动」换成「自定义滚动条」。
+ * 原生滚动条的外观由操作系统决定（Windows 经典灰条 / macOS 细黑条），
+ * 无法用 CSS 统一；而 dsh 壳子的 `dsh-client-ui-theme` 已经为整个
+ * Web 界面注入了全局滚动条规则（`::-webkit-scrollbar` 系列，5px 胶囊、
+ * 中性灰、随主题自动切换）——插件的容器继承的就是这套外观，
+ * 所以本文件**不再重复写 `::-webkit-scrollbar` 规则**（避免叠层），
+ * 只补两件壳子没有覆盖的事：
+ *
+ *   1. `overflow: auto`：把容器从「原生滚动条」切到「壳子的自定义滚动条」；
+ *   2. Firefox 兜底：壳子的 `@supports not selector(::-webkit-scrollbar)`
+ *      分支已经给 `body *` 设了 `scrollbar-width: thin`，但 Firefox 里
+ *      容器仍可能回落原生细条，这里显式再写一遍保证行为一致。
+ *
+ * 使用方：给需要滚动的内容容器加 class="ncm-scroll"。
+ * 注意：
+ *   - 不要同时用 `overflow: scroll`，否则会出现双层滚动条；
+ *   - 槽区背景透明，未滚动时由滚动容器自己的 background 填充，
+ *     避免「滚动条区域和业务区域颜色断层」。
+ */
+
+.ncm-scroll {
+  overflow: auto;
+  /* Firefox：细滚动条，颜色对齐壳子的 scrollbar token */
+  scrollbar-width: thin;
+  scrollbar-color: var(--dsh-scrollbar-thumb, rgba(23, 23, 26, 0.28)) transparent;
+}

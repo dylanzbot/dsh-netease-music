@@ -1,0 +1,58 @@
+/* 评论回复输入浮层。 */
+
+/* 浮层靠回复按钮弹出；按钮在右侧，所以浮层右对齐、向上展开，避免超出抽屉 */
+.ncm-comment-reply {
+  right: 0;
+  /* 在「回复」按钮下方弹出 */
+  top: calc(100% + 8px);
+  bottom: auto;
+  width: 280px;
+  padding: 10px;
+}
+
+.ncm-comment-reply__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 0.5px solid var(--ncm-hairline);
+  border-radius: 10px;
+  background: var(--ncm-page);
+  color: var(--ncm-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  line-height: 18px;
+  resize: none;
+  outline: none;
+}
+
+.ncm-comment-reply__input:focus {
+  border-color: rgba(236, 65, 65, 0.5);
+}
+
+.ncm-comment-reply__input::placeholder {
+  color: var(--ncm-muted);
+}
+
+.ncm-comment-reply__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ncm-comment-reply__count {
+  margin-right: auto;
+  color: var(--ncm-muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 视觉皮肤统一来自 styles/controls.css 的 .ncm-btn；这里只保留尺寸。 */
+.ncm-comment-reply__btn {
+  min-width: 52px;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+}
+

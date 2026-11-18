@@ -1,0 +1,79 @@
+/* ==========================================================================
+ * 共享控件：按钮 / 可交互元素
+ * ==========================================================================
+ * 组件自己的 `__btn` 类只负责尺寸（min-width / height / padding / radius /
+ * font-size），视觉皮肤统一来自这里的 `.ncm-btn`：
+ *   .ncm-btn            基础皮肤（纸白底、细描边、墨水字、hover 变灰）
+ *   .ncm-btn--accent    强调色实心按钮（hover 加深为品牌红）
+ *   .ncm-btn--danger    危险操作实心按钮（品牌红实心，hover 更深）
+ *   .ncm-btn:disabled   统一禁用态
+ *
+ * 用法：<button class="ncm-confirm-modal__btn ncm-btn ncm-btn--accent">
+ */
+
+.ncm-btn {
+  border: 0.5px solid var(--ncm-hairline);
+  background: var(--ncm-paper);
+  color: var(--ncm-ink);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ncm-btn:hover:not(:disabled) {
+  background: var(--ncm-hover);
+}
+
+.ncm-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* 强调色实心按钮 */
+.ncm-btn--accent {
+  border-color: var(--ncm-accent);
+  background: var(--ncm-accent);
+  color: #fff;
+}
+
+.ncm-btn--accent:hover:not(:disabled) {
+  background: var(--ncm-brand);
+}
+
+/* 危险操作实心按钮 */
+.ncm-btn--danger {
+  border-color: var(--ncm-brand);
+  background: var(--ncm-brand);
+  color: #fff;
+}
+
+.ncm-btn--danger:hover:not(:disabled) {
+  background: #a50a0a;
+}
+
+/* 键盘可达性：统一焦点环 */
+.ncm-btn:focus-visible {
+  outline: 2px solid var(--ncm-brand);
+  outline-offset: 2px;
+}
+
+/* ---- 图标按钮（关闭 ×、返回、工具按钮等无底色按钮）----
+ * 组件各自类只补尺寸 / 圆角 / 定位 / 字号。
+ */
+.ncm-icon-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ncm-muted);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ncm-icon-btn:hover:not(:disabled) {
+  background: var(--ncm-hover);
+  color: var(--ncm-ink);
+}
+
+.ncm-icon-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+

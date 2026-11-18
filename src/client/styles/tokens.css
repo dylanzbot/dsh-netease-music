@@ -1,0 +1,47 @@
+/* ==========================================================================
+ * 设计 tokens（唯一来源）
+ * ==========================================================================
+ * 这些变量同时挂在「主面板」和「设置面板」两个插槽根节点上：
+ *   - `.ncm-panel`   主面板（sidebar main 插槽）；
+ *   - `.ncm-settings` 全局设置页区块（settings.section 插槽，与主面板不在同一 DOM 树，
+ *                     因此必须单独也挂一份，否则设置面板拿不到品牌色 / 字体等）。
+ * 其它任何组件 / 页面都不应再自行定义这些变量，直接继承即可。
+ */
+
+.ncm-panel,
+.ncm-settings {
+  /* ---- 品牌 / 强调色 ---- */
+  --ncm-brand: #c20c0c;
+  --ncm-accent: #ec4141;
+  /* ---- 文字 / 线条 / 背景 ---- */
+  --ncm-ink: #17171a;
+  --ncm-muted: #72737a;
+  --ncm-hairline: #ececee;
+  --ncm-paper: #ffffff;
+  --ncm-black: #060608;
+  --ncm-page: #f7f5f2;
+  --ncm-card: #ffffff;
+  --ncm-hover: rgba(23, 23, 26, 0.045);
+  --ncm-search-bg: rgba(255, 255, 255, 0.92);
+  /* ---- 字体 ---- */
+  --ncm-font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --ncm-font-display: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  /* ---- 动效节奏（由 motion.css 的各 animation 引用） ---- */
+  --ncm-motion-fast: 160ms;
+  --ncm-motion-normal: 220ms;
+  --ncm-motion-slow: 320ms;
+  --ncm-motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+body[data-ds-dark-theme] .ncm-panel,
+body[data-ds-dark-theme] .ncm-settings {
+  --ncm-ink: #f2f2f4;
+  --ncm-muted: #9b9ca3;
+  --ncm-hairline: #2a2b30;
+  --ncm-paper: #17181c;
+  --ncm-page: #0d0e11;
+  --ncm-card: #181a1e;
+  --ncm-hover: rgba(255, 255, 255, 0.07);
+  --ncm-search-bg: rgba(30, 31, 36, 0.9);
+}

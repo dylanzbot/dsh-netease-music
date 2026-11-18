@@ -1,0 +1,160 @@
+/* MV 卡片（封面态 / 内联播放器态）。 */
+
+.ncm-mv-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ---- 封面态 ---- */
+
+.ncm-mv-card__cover {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #eae5de, #d5cec4);
+  box-shadow: 0 10px 24px rgba(24, 18, 14, 0.1);
+}
+
+body[data-ds-dark-theme] .ncm-mv-card__cover {
+  background: linear-gradient(145deg, #282a2f, #1d1e22);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+}
+
+.ncm-mv-card__cover-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ncm-mv-card:hover .ncm-mv-card__cover-img {
+  transform: scale(1.045);
+}
+
+.ncm-mv-card__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 7, 7, 0.5) 0%, rgba(8, 7, 7, 0) 46%);
+  opacity: 0.72;
+  transition: opacity 0.2s ease;
+}
+
+.ncm-mv-card:hover .ncm-mv-card__shade {
+  opacity: 0.92;
+}
+
+/* 封面播放按钮已统一为 NcmPlayButton（见 play-button.css）。 */
+
+.ncm-mv-card__badge {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.42);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 10px;
+  backdrop-filter: blur(6px);
+}
+
+/* ---- 播放器态 ---- */
+
+.ncm-mv-card__player {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  /* 裁剪在视频框内：音量竖条等浮层不超出 MV 区域。清晰度/倍速菜单只在全屏出现，不受影响。 */
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
+  /* 容器查询：控制栏按卡片实际宽度自适应隐藏次要控件；size 让音量竖条可用 cqh 按视频高度自适应。 */
+  container-type: inline-size;
+}
+
+.ncm-mv-card__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #000;
+  cursor: pointer;
+}
+
+/* 全屏时容器铺满屏幕，video 撑满。 */
+.ncm-mv-card__player:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+  overflow: hidden;
+  border-radius: 0;
+  background: #000;
+}
+
+.ncm-mv-card__player:fullscreen .ncm-mv-card__video {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 暂停时中央大播放按钮。 */
+.ncm-mv-card__center-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 3;
+}
+
+.ncm-mv-card__center-play:hover {
+  background: rgba(0, 0, 0, 0.68);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* ---- 控制栏显隐（控制栏本体样式见 mv-controls.css） ---- */
+
+.ncm-mv-card__player--show-controls .ncm-mv-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- 文案 ---- */
+
+.ncm-mv-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ncm-mv-card__name {
+  overflow: hidden;
+  color: var(--ncm-ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ncm-mv-card__sub {
+  color: var(--ncm-muted);
+  font-size: 11px;
+}

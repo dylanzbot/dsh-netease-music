@@ -1,0 +1,76 @@
+/* 共享骨架屏样式（页面级加载占位）。 */
+
+.ncm-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.ncm-skeleton--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 18px;
+  /* 铺满父级（如歌手页 Tab 面板的最小高度），避免切 Tab 时高度塌陷。 */
+  align-content: start;
+}
+
+.ncm-skeleton--grid .ncm-skeleton__row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-height: 0;
+}
+
+.ncm-skeleton__cover-card {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+  animation: ncm-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.ncm-skeleton--grid .ncm-skeleton__line {
+  width: 64%;
+}
+
+.ncm-skeleton__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+}
+
+.ncm-skeleton__cover {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+  animation: ncm-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.ncm-skeleton__lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ncm-skeleton__line {
+  width: 72%;
+  height: 11px;
+  border-radius: 6px;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+  animation: ncm-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.ncm-skeleton__line--short {
+  width: 42%;
+  height: 9px;
+  animation-delay: 0.15s;
+}
+

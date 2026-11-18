@@ -1,0 +1,126 @@
+/* 统一标签样式（黑胶会员 / 黑胶超级会员 / 无版权）。 */
+
+.ncm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  padding: 0 5px;
+  border: 0.5px solid transparent;
+  border-radius: 3px;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ncm-tag__icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ncm-tag__label {
+  display: inline;
+}
+
+.ncm-tag__trailing {
+  display: inline;
+}
+
+/* ------------------------------------------------------------------ */
+/* 尺寸档位（颜色统一由 .ncm-tag--vip / --svip 控制，这里只管大小）      */
+/*   md 18px / 10px  ·  lg 24px / 11px                                   */
+/* ------------------------------------------------------------------ */
+
+/* md 是默认尺寸：沿用 .ncm-tag 基础值，只补一个明确的高度 */
+.ncm-tag--md {
+  height: 18px;
+  padding: 0 5px;
+  gap: 3px;
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.ncm-tag--vip-lg,
+.ncm-tag--svip-lg {
+  border-radius: 999px;
+}
+
+.ncm-tag--vip-lg,
+.ncm-tag--svip-lg {
+  height: 24px;
+  padding: 0 9px;
+  gap: 5px;
+  font-size: 11px;
+  line-height: 22px;
+}
+
+.ncm-tag--vip-lg {
+  border-color: rgba(236, 65, 65, 0.32);
+  background: rgba(236, 65, 65, 0.08);
+}
+
+.ncm-tag--svip-lg {
+  border-color: rgba(176, 132, 39, 0.42);
+  background: rgba(247, 217, 160, 0.18);
+}
+
+body[data-ds-dark-theme] .ncm-tag--vip-lg {
+  border-color: rgba(236, 65, 65, 0.42);
+  background: rgba(236, 65, 65, 0.14);
+}
+
+body[data-ds-dark-theme] .ncm-tag--svip-lg {
+  border-color: rgba(226, 180, 106, 0.46);
+  background: rgba(226, 180, 106, 0.14);
+  color: #e2b46a;
+}
+
+/* 黑胶会员：红色描边 + 红字 */
+.ncm-tag--vip {
+  border-color: rgba(236, 65, 65, 0.28);
+  color: var(--ncm-accent, #ec4141);
+  background: transparent;
+}
+
+/* 黑胶超级会员：金棕描边 + 金字 */
+.ncm-tag--svip {
+  border-color: rgba(176, 132, 39, 0.42);
+  color: #b08427;
+  background: rgba(247, 217, 160, 0.16);
+}
+
+body[data-ds-dark-theme] .ncm-tag--svip {
+  border-color: rgba(226, 180, 106, 0.46);
+  color: #e2b46a;
+  background: rgba(226, 180, 106, 0.12);
+}
+
+.ncm-tag--no-copyright {
+  border-color: var(--ncm-hairline, #ececee);
+  color: var(--ncm-muted, #72737a);
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.04));
+}
+
+/* ------------------------------------------------------------------ */
+/* Legacy：原搜索框 VIP 角标。按要求保留但不使用；                      */
+/* 日后 NcmVipTag variant="legacy" 即可切换到这套样式。                */
+/* ------------------------------------------------------------------ */
+
+.ncm-search-vip,
+.ncm-tag--legacy {
+  flex: 0 0 auto;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #f7d9a0, #e2b46a);
+  color: #6b4310;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0.04em;
+}

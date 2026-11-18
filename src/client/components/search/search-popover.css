@@ -1,0 +1,307 @@
+/* ---- 结果下拉层 ---- */
+
+/* 定位 / z-index 由 .ncm-popover 提供；这里覆盖成毛玻璃搜索面板 */
+.ncm-search__pop {
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 440px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--ncm-paper) 58%, transparent);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  backdrop-filter: blur(28px) saturate(1.4);
+  box-shadow:
+    0 24px 60px rgba(20, 16, 14, 0.22),
+    0 4px 14px rgba(20, 16, 14, 0.08);
+}
+
+.ncm-search__pop-body {
+  min-height: 0;
+  flex: 1;
+  overscroll-behavior: contain;
+}
+
+.ncm-search__pop-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px 10px;
+  color: var(--ncm-muted);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.ncm-search__pop-loading {
+  color: var(--ncm-accent);
+}
+
+.ncm-search__list {
+  max-height: 308px;
+  margin: 0;
+  padding: 0 8px 6px;
+  list-style: none;
+}
+
+.ncm-search__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ncm-search__row:hover {
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.04));
+}
+
+.ncm-search__row-cover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--ncm-hover);
+  color: var(--ncm-muted);
+}
+
+.ncm-search__row-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ncm-search__row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ncm-search__row-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  overflow: hidden;
+  color: var(--ncm-ink);
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.ncm-search__row-meta {
+  color: var(--ncm-muted);
+  font-size: 11px;
+}
+
+.ncm-search__row-time {
+  flex: 0 0 auto;
+  color: var(--ncm-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-search__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 34px 20px;
+  color: var(--ncm-muted);
+  font-size: 13px;
+}
+
+.ncm-search__pop-foot {
+  flex: 0 0 auto;
+  padding: 9px 18px 11px;
+  border-top: 0.5px solid var(--ncm-hairline);
+  color: var(--ncm-muted);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
+/* ---- 骨架屏 ---- */
+
+.ncm-search__skeletons {
+  padding: 4px 10px 12px;
+}
+
+.ncm-search__skeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px;
+}
+
+.ncm-search__skeleton-cover {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+}
+
+.ncm-search__skeleton-line {
+  width: 45%;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--ncm-hover, rgba(0, 0, 0, 0.06));
+}
+
+
+body[data-ds-dark-theme] .ncm-search__pop {
+  background: color-mix(in srgb, var(--ncm-paper) 62%, transparent);
+}
+
+
+/* ---- 「我的歌单 / 我的收藏」分组搜索结果 ---- */
+
+.ncm-search__library-group {
+  padding: 3px 10px 7px;
+}
+
+.ncm-search__library-group-title {
+  margin: 5px 6px 4px;
+  color: var(--ncm-ink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.ncm-search__library-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ncm-search__library-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ncm-search__library-row:hover {
+  background: var(--ncm-hover);
+}
+
+.ncm-search__library-index {
+  flex: 0 0 auto;
+  width: 22px;
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ncm-search__library-song {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: baseline;
+  gap: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ncm-search__library-song-name {
+  overflow: hidden;
+  color: var(--ncm-ink);
+  font-size: 12px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+}
+
+.ncm-search__library-song-artist {
+  overflow: hidden;
+  color: var(--ncm-muted);
+  font-size: 10.5px;
+  text-overflow: ellipsis;
+}
+
+
+.ncm-search__library-playlist {
+  flex: 0 0 200px;
+  overflow: hidden;
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ncm-search__library-row--disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ncm-search__library-row--disabled:hover {
+  background: transparent;
+}
+
+/* ---- 全站多类型结果分组 ---- */
+
+.ncm-search__group {
+  padding: 2px 0 6px;
+}
+
+/* 分组标题：与结果行封面左缘对齐（list 8 + row 10 = 18px） */
+.ncm-search__group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 3px;
+  padding: 0 8px 0 18px;
+}
+
+/* 柔和小标签：低饱和、宽字距、不全大写粗体 */
+.ncm-search__group-label {
+  flex: 0 0 auto;
+  color: var(--ncm-muted);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 16px;
+}
+
+/* 计数徽标：浅色描边药丸，弱化存在感 */
+.ncm-search__group-count {
+  flex: 0 0 auto;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ncm-muted) 12%, transparent);
+  color: var(--ncm-muted);
+  font-size: 9.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 15px;
+}
+
+/* 歌手头像圆形 */
+.ncm-search__row-cover--round {
+  border-radius: 50%;
+}

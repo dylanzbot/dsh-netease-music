@@ -1,0 +1,14 @@
+/* 图标组件样式。
+ *
+ * 大多数图标是纯 currentColor 描边、无需额外样式；但有几个图标带有「语义配色」，
+ * 颜色规则必须和组件（icons.tsx）放在一起维护，避免散落到各使用方页面里。
+ */
+
+/* 性别图标：男生天蓝、女生粉红。 */
+.ncm-gender.ncm-gender--male {
+  color: #58b6ef;
+}
+
+.ncm-gender.ncm-gender--female {
+  color: #f48fb1;
+}

@@ -1,0 +1,27 @@
+# release-please：读 conventional commits，自动算版本 + 改 package.json + 生成 CHANGELOG + 打 tag + 开 Release PR
+
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-please-ncm
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+  issues: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
