@@ -1,6 +1,6 @@
 {
   "name": "@dylanzbot/dsh-netease-music",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "DeepSeek Harness (dsh) Web plugin: NetEase Cloud Music sidebar panel — login via QR code, search and play.",
   "type": "module",
   "license": "MIT",
