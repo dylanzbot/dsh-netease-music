@@ -1,20 +1,51 @@
 #!/usr/bin/env bash
-# Link the built @dylanzbot/dsh-netease-music package into a running dsh profile.
+# Install the built @dylanzbot/dsh-netease-music package into a running dsh profile.
 #
-# Usage: scripts/link-profile.sh [profile]
-#   profile   defaults to $DSH_PROFILE, then `web`
+# Usage: scripts/link-profile.sh [--dev] [profile]
+#   --dev     用 pnpm 的 `link:` 协议安装（明确软链，适合本机开发）。
+#             改完 `npm run build` 后刷新页面 / 重启即生效，无需重跑本脚本。
+#             省略时用 `file:` 协议安装，保持原有行为（发布 / 分发场景）。
+#   profile   默认为 $DSH_PROFILE，否则 web
 #
-# `dsh plugin add` 用 `file:$PWD` 本地路径引用，pnpm 会把包**拷贝**（不是
-# symlink）进 profile 的 node_modules。同版本号下，重新 `dsh plugin add`
-# 不会重新拷贝（按 version 去重）。所以「改完代码 + npm run build 之后让
-# profile 读到新产物」需要：
-#   1. dsh plugin add   （只首次或 version 变化时拷新文件）
-#   2. sync-into-profile  （把仓库最新 lib/ 覆盖到 profile 拷贝里）
-# 本脚本两条都做：先 add，再 sync。
+# pnpm 10 对本地目录的 `file:` / `link:` 依赖都会在 profile 的 node_modules
+# 里生成指向仓库的 symlink；旧版 pnpm 或某些配置下 `file:` 会是真实拷贝。
+# 本脚本先按选定协议安装，再按 TARGET 的实际形态处理：
+#   - symlink：仓库的 lib/ 就是 profile 实际用的那份，无需（也不能）覆盖。
+#   - 真实目录：把仓库最新 lib/ 覆盖进去，保证同版本号下也能拿到新产物。
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROFILE="${1:-${DSH_PROFILE:-web}}"
+
+DEV_LINK=false
+PROFILE=""
+for arg in "$@"; do
+  case "$arg" in
+    --dev)
+      DEV_LINK=true
+      ;;
+    -h|--help)
+      cat <<'EOH'
+Usage: scripts/link-profile.sh [--dev] [profile]
+  --dev     用 link: 协议安装（软链，适合本机开发）
+  profile   默认为 $DSH_PROFILE，否则 web
+EOH
+      exit 0
+      ;;
+    -*)
+      echo "unknown option: $arg" >&2
+      exit 1
+      ;;
+    *)
+      if [ -n "$PROFILE" ]; then
+        echo "unexpected argument: $arg" >&2
+        exit 1
+      fi
+      PROFILE="$arg"
+      ;;
+  esac
+done
+PROFILE="${PROFILE:-${DSH_PROFILE:-web}}"
+
 DSH_HOME_DIR="${DSH_HOME:-$HOME/.dsh}"
 PROFILE_DIR="$DSH_HOME_DIR/profiles/$PROFILE"
 DSH_BIN="${DSH_BIN:-$(command -v dsh || true)}"
@@ -32,33 +63,47 @@ if [ ! -f "$REPO/lib/index.js" ] || [ ! -f "$REPO/lib/client.js" ]; then
   exit 1
 fi
 
-echo "==> @dylanzbot/dsh-netease-music -> profile '$PROFILE'"
-"$DSH_BIN" plugin --profile "$PROFILE" add --save-prod "file:$REPO"
+if [ "$DEV_LINK" = true ]; then
+  SPEC="link:$REPO"
+  echo "==> @dylanzbot/dsh-netease-music -> profile '$PROFILE' (dev, link: symlink)"
+else
+  SPEC="file:$REPO"
+  echo "==> @dylanzbot/dsh-netease-music -> profile '$PROFILE' (file:)"
+fi
+"$DSH_BIN" plugin --profile "$PROFILE" add --save-prod "$SPEC"
 
-# pnpm 的 file: 引用是拷贝，不是 symlink。同 version 下重新 add 不会刷新
-# profile 里的 lib/，所以手动把仓库最新 lib/ 覆盖过去。
 TARGET="$PROFILE_DIR/node_modules/@dylanzbot/dsh-netease-music"
-# scoped 包多一层 @dylanzbot/ 目录：pnpm add 通常会建，但目标不存在时补一刀，
-# 避免 cp -R 因父目录缺失而失败。
 mkdir -p "$(dirname "$TARGET")"
 if [ -L "$TARGET" ]; then
-  # 开发场景：pnpm 的 link: 软链直接指向仓库，仓库的 lib/ 就是 profile 用的
-  # 那份，无需（也不能）先把仓库产物删掉再拷回来。
+  # 软链（link:，或 pnpm 10 下的 file:）：仓库的 lib/ 就是 profile 用的那份。
   echo "==> $TARGET is a symlink (linked checkout); skip lib sync"
+  LINKED=true
 elif [ -d "$TARGET" ]; then
-  # 发布场景：file: 引用是拷贝，同 version 下重新 add 不会刷新 lib/，
-  # 所以手动把仓库最新 lib/ 覆盖过去。
-  echo "==> syncing lib/ into $TARGET"
-  # 删掉 profile 拷贝里所有旧的 lib 内容（.DS_Store、旧 .d.ts、旧 client.js…）
+  # 真实拷贝（旧版 pnpm 的 file:，或 tarball 安装）：同版本号下 add 不会刷新
+  # lib/，所以手动把仓库最新产物覆盖过去。
+  echo "==> $TARGET is a copy; syncing lib/"
   rm -rf "$TARGET/lib"
   cp -R "$REPO/lib" "$TARGET/lib"
   echo "synced: $(ls "$TARGET/lib")"
+  LINKED=false
+else
+  echo "install target missing at $TARGET" >&2
+  exit 1
 fi
 
-cat <<EON
-
-Profile '$PROFILE' now has the latest built artifact.
-  - 浏览器侧改动：刷新 dsh Web 页面即可
-  - 宿主侧改动：在 dsh 左侧栏「插件」页的「已安装」里禁用再启用 @dylanzbot/dsh-netease-music
-    （或重启 dsh 进程）
+echo
+if [ "$LINKED" = true ]; then
+  cat <<EON
+Profile '$PROFILE' now uses a symlink to the checkout's lib/.
+  - 浏览器侧改动：npm run build（或 npm run dev 监听）后刷新 dsh Web 页面
+  - 宿主侧改动：npm run build 后，在插件页「已安装」里禁用再启用本插件，
+    或重启 dsh 进程
 EON
+else
+  cat <<EON
+Profile '$PROFILE' now holds the latest built artifact (copied).
+  后续改动需重跑本脚本（或手动同步 lib/）才会生效：
+  - 浏览器侧改动：刷新 dsh Web 页面即可
+  - 宿主侧改动：在插件页「已安装」里禁用再启用本插件，或重启 dsh 进程
+EON
+fi

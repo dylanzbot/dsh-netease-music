@@ -140,7 +140,7 @@ MV 播放音量调整：
 |---|---|
 | Node.js | `^22.19.0` 或 `>=24.0.0` |
 | dsh | `>=0.2.0-rc.2` |
-| dsh 配置 | 已配置好一个 profile（如 `web`） |
+| dsh 配置 | 已配置好一个 profile（`web` 或 `desktop` 均可） |
 
 ### 方式一：插件管理 / 命令行安装
 
@@ -151,6 +151,8 @@ dsh plugin --profile web add --save-prod @dylanzbot/dsh-netease-music
 ```
 
 装完后**刷新 dsh Web 页面**，左侧栏即可看到「网易云音乐」入口。若图标没出现，打开左侧栏的 **插件** 页，在 **已安装** 标签里确认 `@dylanzbot/dsh-netease-music` 已启用。
+
+桌面端同样支持：把上面命令里的 `web` 换成 `desktop`，装完重启 Desktop 即可。登录凭证按 profile 隔离，需要在桌面端重新扫码登录一次。
 
 > **找不到「设置 → 插件」？** dsh 的插件管理入口是**左侧栏顶级的「插件」**（不是「设置」里）。设置里的「内置插件」只是只读清单，没有启用开关。
 
@@ -163,10 +165,10 @@ git clone https://github.com/dylanzbot/dsh-netease-music.git
 cd dsh-netease-music
 npm install
 npm run build
-bash scripts/link-profile.sh        # 默认装进 profile "web"
+bash scripts/link-profile.sh --dev        # 开发：软链装进 profile "web"
 ```
 
-脚本会先执行 `dsh plugin add`，再把仓库最新的 `lib/` 同步进 profile 的插件目录（规避 pnpm `file:` 拷贝不刷新的问题）。安装后刷新页面即可；若侧栏没出现图标，到左侧栏 **插件 → 已安装** 确认 `@dylanzbot/dsh-netease-music` 已启用。
+本地开发用 `--dev`（`link:` 软链）：改完 `npm run build` 后刷新页面或重启即生效，无需反复安装。不带 `--dev` 时用 `file:` 协议，适合发布 / 分发。脚本会按 profile 里的实际形态处理 `lib/`——软链直接使用仓库产物，真实拷贝则同步最新 `lib/`。安装后刷新页面即可；若侧栏没出现图标，到左侧栏 **插件 → 已安装** 确认 `@dylanzbot/dsh-netease-music` 已启用。
 
 ---
 
@@ -224,13 +226,13 @@ npm run test:coverage # 测试覆盖率
 
 ```bash
 npm run build
-bash scripts/link-profile.sh [profile]   # profile 默认取 $DSH_PROFILE，否则 web
+bash scripts/link-profile.sh --dev [profile]   # 软链安装；profile 默认 $DSH_PROFILE，否则 web
 ```
 
 - 浏览器侧改动：`npm run dev` 会自动重建，刷新 dsh Web 页面即可看到。
 - 宿主侧改动：`npm run dev` 只增量重建浏览器侧，宿主改动需重新 `npm run build`，再到左侧栏 **插件 → 已安装** 禁用再启用（或重启 dsh 进程）才会生效。
 
-`link-profile.sh` 会自动识别 profile 里是 `link:` 软链（开发）还是 `file:` 拷贝（发布），分别处理 `lib/` 同步；可用 `DSH_HOME` / `DSH_BIN` 环境变量覆盖默认路径。
+`--dev` 用 `link:` 软链安装，仓库 `lib/` 就是 profile 所用产物，改完 `npm run build` 刷新 / 重启即生效；不带 `--dev` 则用 `file:`，在真实拷贝场景下脚本会把最新 `lib/` 同步进 profile。可用 `DSH_HOME` / `DSH_BIN` 环境变量覆盖默认路径，`bash scripts/link-profile.sh --help` 查看用法。
 
 ### 项目结构
 
