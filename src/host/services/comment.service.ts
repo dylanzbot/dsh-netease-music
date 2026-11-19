@@ -6,7 +6,7 @@
 
 import type { NcmCommentPageDTO, NcmCommentResourceType } from '../../types/index.js'
 import { deleteComment, fetchComments, likeComment, replyComment } from '../api/index.js'
-import { getCookie } from '../config.js'
+import { getCookie } from '../credentials.js'
 import { NotLoggedInError } from '../error/index.js'
 
 function requireCookie(): string {

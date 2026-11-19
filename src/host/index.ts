@@ -12,12 +12,32 @@
  * @module @dylanzbot/dsh-netease-music
  */
 
-import type { Context } from '../types/cordis-host.js'
+import type { Context, PluginConfig, StandardSchema } from '../types/cordis-host.js'
 import { PLUGIN_ID } from '../constants/plugin.js'
+import { initCookieStore } from './credentials.js'
+import { initPreferences } from './preferences.js'
 import { createHostRouters } from './routes/index.js'
 
 /** 插件在 dsh 里注册的稳定包名。 */
 export const name = PLUGIN_ID
+
+/**
+ * 插件配置（非敏感偏好）；Cookie 等机密走 ctx.credentials，不在这里。
+ * 手写 Standard Schema 对象即可满足 Cordis 的 Config 校验契约，不新增依赖。
+ */
+export const Config: StandardSchema<PluginConfig> = {
+  '~standard': {
+    version: 1,
+    vendor: PLUGIN_ID,
+    validate(value: unknown) {
+      const raw = typeof value === 'object' && value !== null
+        ? value as Record<string, unknown>
+        : {}
+      const showFollowStats = typeof raw.showFollowStats === 'boolean' ? raw.showFollowStats : true
+      return { value: { showFollowStats } }
+    },
+  },
+}
 
 /**
  * 宿主侧依赖的 dsh 服务名列表。
@@ -28,9 +48,21 @@ export const inject = ['connection'] as const
 /**
  * 宿主半侧的入口函数，dsh 会在启动时调用它。
  * @param ctx - dsh 给的宿主插件 context。
+ * @param config
  */
-export function apply(ctx: Context): void {
+export async function apply(
+  ctx: Context,
+  config: PluginConfig = { showFollowStats: true },
+): Promise<void> {
   const logger = ctx.logger(PLUGIN_ID)
+
+  // 偏好走插件 Config / configEditor；Cookie 走官方凭据 seam，二者都不再
+  // 写进同一份本地 JSON。先等 Cookie 预读完再注册路由，避免启动瞬间的
+  // 「未登录」误判；初始化失败只记日志，不影响路由注册。
+  initPreferences(ctx, config, logger)
+  await initCookieStore(ctx, logger).catch((error: unknown) => {
+    logger.warn(`${PLUGIN_ID}: Cookie 凭据初始化失败：${String(error)}`)
+  })
 
   // 等 connection 服务就位后注册路由；scope 是带作用域的 child context。
   ctx.inject(['connection'], (scope) => {
@@ -63,4 +95,4 @@ export function apply(ctx: Context): void {
 }
 
 /** 重导出官方类型，方便单测和诊断。 */
-export type { Disposable, Logger } from '../types/cordis-host.js'
+export type { Disposable, Logger, PluginConfig } from '../types/cordis-host.js'

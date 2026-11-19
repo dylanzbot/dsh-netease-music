@@ -7,10 +7,10 @@ import {
   fetchSongUrlByLevel,
   setSongLike,
 } from '../../src/host/api/index.js'
-import { getCookie } from '../../src/host/config.js'
+import { getCookie } from '../../src/host/credentials.js'
 import { getLikedSongIds, getSongUrl, setSongLikeById } from '../../src/host/services/song.service.js'
 
-vi.mock('../../src/host/config.js', () => ({ getCookie: vi.fn() }))
+vi.mock('../../src/host/credentials.js', () => ({ getCookie: vi.fn() }))
 vi.mock('../../src/host/api/index.js', () => ({
   ALLOWED_QUALITY_LEVELS: ['standard', 'exhigh', 'lossless'],
   DEFAULT_QUALITY_LEVEL: 'exhigh',

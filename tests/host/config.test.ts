@@ -2,17 +2,9 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest'
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { PLUGIN_ID } from '../../src/constants/plugin.js'
-import {
-  configPath,
-  getCookie,
-  getSettings,
-  readConfig,
-  setCookie,
-  setShowFollowStats,
-  writeConfig,
-} from '../../src/host/config.js'
+import { configPath, readConfig, stripLegacyCookie, writeConfig } from '../../src/host/config.js'
 
-const TEST_HOME = join(process.cwd(), '.test-tmp', 'dsh-home')
+const TEST_HOME = join(process.cwd(), '.test-tmp', 'dsh-home-config')
 const originalDshHome = process.env.DSH_HOME
 
 beforeEach(() => {
@@ -71,27 +63,23 @@ describe('writeConfig', () => {
   })
 })
 
-describe('凭证与设置读写', () => {
-  it('setCookie 保留 showFollowStats，getCookie 读回', () => {
-    writeConfig({ cookie: '', showFollowStats: false })
-    setCookie('MUSIC_U=abc; __csrf=xyz')
-    expect(getCookie()).toBe('MUSIC_U=abc; __csrf=xyz')
-    expect(readConfig().showFollowStats).toBe(false)
+describe('stripLegacyCookie', () => {
+  it('直接删掉 cookie 键，保留偏好', () => {
+    writeConfig({ cookie: 'MUSIC_U=secret', showFollowStats: false })
+    stripLegacyCookie()
+    expect(JSON.parse(readFileSync(configPath(), 'utf8'))).toEqual({ showFollowStats: false })
+    expect(readConfig()).toEqual({ cookie: '', showFollowStats: false })
   })
 
-  it('setShowFollowStats 保留 cookie 并返回设置', () => {
-    setCookie('MUSIC_U=keep')
-    expect(setShowFollowStats(false)).toEqual({ showFollowStats: false })
-    expect(getCookie()).toBe('MUSIC_U=keep')
-    expect(getSettings()).toEqual({ showFollowStats: false })
-
-    expect(setShowFollowStats(true)).toEqual({ showFollowStats: true })
-    expect(getCookie()).toBe('MUSIC_U=keep')
+  it('缺少 cookie 键时 readConfig 按未登录处理', () => {
+    const path = configPath()
+    mkdirSync(join(path, '..'), { recursive: true })
+    writeFileSync(path, JSON.stringify({ showFollowStats: false }), 'utf8')
+    expect(readConfig()).toEqual({ cookie: '', showFollowStats: false })
   })
 
-  it('getSettings 只暴露非敏感字段', () => {
-    setCookie('MUSIC_U=secret')
-    expect(getSettings()).toEqual({ showFollowStats: true })
-    expect(JSON.stringify(getSettings())).not.toContain('secret')
+  it('文件不存在时不创建文件', () => {
+    stripLegacyCookie()
+    expect(existsSync(configPath())).toBe(false)
   })
 })

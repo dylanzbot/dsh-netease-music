@@ -12,7 +12,7 @@ import {
   fetchUserDetail,
   performRelationAction,
 } from '../api/index.js'
-import { getCookie } from '../config.js'
+import { getCookie } from '../credentials.js'
 import { getMe } from './account.service.js'
 import { csrfFromCookie } from '../../utils/ncm.js'
 import { daysSince } from '../../utils/time.js'

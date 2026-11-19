@@ -18,7 +18,17 @@ export type {
 } from '@deepseek-ai/cordis'
 
 /** 宿主侧 dsh 特有服务。 */
-export type { ConnectionService, RouteDefinition } from './cordis-host.js'
+export type {
+  ConfigEditor,
+  ConnectionService,
+  CredentialKey,
+  CredentialRecord,
+  CredentialsService,
+  PluginConfig,
+  PluginEntry,
+  RouteDefinition,
+  StandardSchema,
+} from './cordis-host.js'
 
 /** 浏览器侧 dsh 特有服务。 */
 export type { ClientContext, RegisterOptions, SlotsService } from './cordis-client.js'

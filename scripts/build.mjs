@@ -292,14 +292,14 @@ async function writeHostWrapper() {
   await writeFile(
     join(PKG_DIR, 'lib/index.js'),
     `// Package entry: the compiled host plugin lives in ./host/index.js.
-export { apply, inject, name } from './host/index.js'
+export { Config, apply, inject, name } from './host/index.js'
 `,
   )
   await writeFile(
     join(PKG_DIR, 'lib/index.d.ts'),
     `// Package entry types: re-export the compiled host plugin declarations.
-export { apply, inject, name } from './host/index.js'
-export type { Disposer, Logger } from './host/index.js'
+export { Config, apply, inject, name } from './host/index.js'
+export type { Disposable, Logger, PluginConfig } from './host/index.js'
 `,
   )
 }

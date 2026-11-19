@@ -2,9 +2,10 @@
  * 宿主半侧（src/host/）用到的 dsh 运行时类型子集。
  *
  * cordis 核心类型（`Logger` / `Disposable` / `Context`）复用官方
- * `@deepseek-ai/cordis` 声明；本文件只保留官方没有的 connection 服务，
- * 并通过 declaration merging 把 `connection` 服务键补进官方 `Context`，
- * 让 `scope.get<ConnectionService>('connection')` 拿到正确类型。
+ * `@deepseek-ai/cordis` 声明；本文件保留官方没有的 dsh 服务，
+ * 并通过 declaration merging 把 `connection` / `credentials` /
+ * `configEditor` 服务键补进官方 `Context`，让 `ctx.get('credentials')`
+ * 这样的调用拿到正确类型。
  *
  * 统一入口见 `cordis.ts`。
  *
@@ -47,9 +48,82 @@ export interface ConnectionService {
   }
 }
 
+// ---------------------------------------------------------------------------
+// 宿主侧用到的 dsh 服务（`credentials` —— 官方凭据 seam）
+// ---------------------------------------------------------------------------
+
+/** 凭据记录地址：`<owner>/<id>`，运行时就是字符串，类型上打品牌防误用。 */
+export interface CredentialKeyBrand {
+  readonly __credentialKey: unique symbol
+}
+export type CredentialKey = string & CredentialKeyBrand
+
+/** 一条持久化凭据记录；payload 由拥有它的插件自己解释。 */
+export interface CredentialRecord {
+  readonly kind: 'grant' | 'api-key'
+  readonly payload?: unknown
+  readonly key?: string
+  readonly env?: Readonly<Record<string, string>>
+}
+
+/** `@deepseek-ai/dsh-credentials` 挂载的 `ctx.credentials` 切片。 */
+export interface CredentialsService {
+  readRecord(key: CredentialKey): Promise<CredentialRecord | undefined>
+  modifyRecord(
+    key: CredentialKey,
+    mutate: (current: CredentialRecord | undefined) => Promise<CredentialRecord | undefined>,
+  ): Promise<CredentialRecord | undefined>
+  deleteRecord(key: CredentialKey): Promise<void>
+}
+
+// ---------------------------------------------------------------------------
+// 宿主侧用到的 dsh 服务（`configEditor` —— 偏好写回 profile 配置）
+// ---------------------------------------------------------------------------
+
+/** profile 里的插件条目（配置编辑器按 id 定位）。 */
+export interface PluginEntry {
+  readonly id?: string
+  readonly options?: {
+    readonly config?: Record<string, unknown>
+  }
+}
+
+/** `@deepseek-ai/dsh-config-editor` 挂载的 `ctx.configEditor` 切片。 */
+export interface ConfigEditor {
+  edit(
+    entry: PluginEntry,
+    change: (current: Record<string, unknown>, inherited: Record<string, unknown>) => Record<string, unknown>,
+  ): Promise<void>
+}
+
+/** Cordis `Config` 需要的 Standard Schema 最小面（不新增依赖）。 */
+export interface StandardSchema<T> {
+  readonly '~standard': {
+    readonly version: 1
+    readonly vendor: string
+    validate(value: unknown):
+      | { readonly value: T }
+      | { readonly issues: readonly { readonly message: string }[] }
+  }
+}
+
+/** 本插件的 Config 形状：只有非敏感偏好。 */
+export interface PluginConfig {
+  readonly showFollowStats: boolean
+}
+
 declare module '@deepseek-ai/cordis' {
   interface Context {
     /** dsh 的 HTTP 通道路由层。 */
     connection: ConnectionService
+    /** 官方凭据 seam；极简 profile 可能没有。 */
+    credentials?: CredentialsService
+    /** 把插件配置写回当前 profile；极简 profile 可能没有。 */
+    configEditor?: ConfigEditor
+  }
+
+  interface Fiber {
+    /** Loader 挂在 fiber 上的条目，configEditor 用它定位 profile 配置行。 */
+    entry?: PluginEntry
   }
 }

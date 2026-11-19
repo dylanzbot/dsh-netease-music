@@ -29,7 +29,7 @@ import {
   fetchUserPlaylists,
   fetchVipInfo,
 } from '../api/index.js'
-import { getCookie, setCookie } from '../config.js'
+import { getCookie, saveCookie } from '../credentials.js'
 import { imageUrl, NCM_IMAGE_SIZE } from '../api/common.api.js'
 // normalizeCookieString 仅用于已注释的 Cookie 登录，恢复时取消注释：
 // import { normalizeCookieString } from '../utils/cookie.js'
@@ -102,7 +102,7 @@ function mapProfile(
  *   }
  *   if (account === null) throw new InvalidCookieError('Cookie 无效或已过期，请重新获取')
  *
- *   setCookie(cookie)
+ *   await saveCookie(cookie)
  *   clearAllCaches() // 换号时一次性清掉「我的」/歌单/搜索缓存，避免跨账号残留
  *   return { nickname: account.profile?.nickname ?? '' }
  * }
@@ -121,7 +121,7 @@ export async function getMe(): Promise<NcmMeDTO> {
   try {
     const account = await fetchAccount(cookie)
     if (account === null) {
-      setCookie('')
+      await saveCookie('')
       invalidateMe()
       throw new NotLoggedInError()
     }
@@ -151,7 +151,7 @@ export async function getMe(): Promise<NcmMeDTO> {
     return data
   } catch (error) {
     if (isAuthError(error)) {
-      setCookie('')
+      await saveCookie('')
       invalidateMe()
       throw new NotLoggedInError()
     }
@@ -172,7 +172,7 @@ export async function getAuthStatus(): Promise<NcmAuthStatusDTO> {
 }
 
 /** 退出登录：清 Cookie 和缓存。 */
-export function logout(): void {
-  setCookie('')
+export async function logout(): Promise<void> {
+  await saveCookie('')
   clearAllCaches()
 }

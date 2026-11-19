@@ -28,7 +28,7 @@ import {
   searchSongs,
   searchSongsWithTotal,
 } from '../api/index.js'
-import { getCookie } from '../config.js'
+import { getCookie } from '../credentials.js'
 import { getMe } from './account.service.js'
 import {
   librarySearchCache,

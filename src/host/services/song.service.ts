@@ -12,7 +12,7 @@ import {
   fetchSongUrlByLevel,
   setSongLike,
 } from '../api/index.js'
-import { getCookie } from '../config.js'
+import { getCookie } from '../credentials.js'
 import { NotLoggedInError } from '../error/index.js'
 
 /** 取当前登录用户 Cookie；未登录抛 NotLoggedInError（沿用 account 的语义）。 */

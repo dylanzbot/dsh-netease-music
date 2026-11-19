@@ -6,7 +6,7 @@
 
 import type { NcmMyPlaylistsDTO, NcmSongDTO } from '../../types/index.js'
 import { fetchAccount, fetchPlaylistSongs, fetchUserPlaylists, setPlaylistSubscribed } from '../api/index.js'
-import { getCookie } from '../config.js'
+import { getCookie } from '../credentials.js'
 import { NotLoggedInError } from '../error/index.js'
 import { invalidateMe } from './account.service.js'
 

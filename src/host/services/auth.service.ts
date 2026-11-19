@@ -15,7 +15,7 @@
 import { toDataURL } from 'qrcode'
 import { QR_STATE, type QrState } from '../../constants/qr.js'
 import { checkQrKey, createQrKey, NCM_BASE_URL, NcmQrCode } from '../api/auth.api.js'
-import { setCookie } from '../config.js'
+import { saveCookie } from '../credentials.js'
 import { QrSessionExpiredError } from '../error/index.js'
 import { clearAllCaches } from './cache.js'
 
@@ -87,7 +87,7 @@ export async function checkQrLogin(key: string): Promise<QrCheckResult> {
     if (result.cookie === '') {
       return { state: QR_STATE.ERROR, message: '登录成功但未拿到登录凭证，请刷新二维码重试' }
     }
-    setCookie(result.cookie)
+    await saveCookie(result.cookie)
     clearAllCaches() // 扫码换号后不清缓存会让「我的」页短暂显示上一账号数据
     return { state: QR_STATE.CONFIRMED }
   }

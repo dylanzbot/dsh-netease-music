@@ -1,21 +1,25 @@
 /**
- * 登录凭证（网易云 Cookie）的本地读写。
- * 唯一落盘位置：`$DSH_HOME/storages/dsh-netease-music/config.json`；
- * 目录递归创建，文件权限 600；
- * 浏览器侧永远拿不到完整 Cookie，只由宿主侧读写。
+ * 旧版本地配置文件的读写（迁移与降级兜底用）。
+ *
+ * 历史行为：`$DSH_HOME/storages/dsh-netease-music/config.json` 同时存 Cookie
+ * 和偏好。现在 Cookie 迁到 dsh 官方凭据 seam（`ctx.credentials`），偏好迁到
+ * 插件 Config（`ctx.configEditor`）；这个文件只在两种情况下还会被用到：
+ *   1. 初始化时读取老用户遗留的数据并迁移；
+ *   2. 极简 profile 没有 credentials / configEditor 服务时降级兜底。
+ *
+ * 迁移完成后文件里的 `cookie` 会被清空，不再留存明文凭证。
  *
  * @module @dylanzbot/dsh-netease-music/host/config
  */
 
-import type { NcmSettingsDTO } from '../types/index.js'
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { PLUGIN_ID } from '../constants/plugin.js'
 
-/** 配置文件结构。后续接搜索/播放时再扩展字段。 */
+/** 旧配置文件结构（仅用于迁移 / 降级）。 */
 export interface NcmConfig {
-  /** 网易云登录 Cookie（MUSIC_U=...; __csrf=... 等）。 */
+  /** 网易云登录 Cookie（迁移后恒为空串）。 */
   readonly cookie: string
   /** 是否在「我的」Hero 中显示关注 / 粉丝数量，默认 true。 */
   readonly showFollowStats: boolean
@@ -31,12 +35,12 @@ function dshHome(): string {
   return join(homedir(), '.dsh')
 }
 
-/** 配置文件绝对路径。 */
+/** 旧配置文件绝对路径。 */
 export function configPath(): string {
   return join(dshHome(), 'storages', PLUGIN_ID, 'config.json')
 }
 
-/** 读配置；文件不存在或 JSON 损坏时返回空配置。 */
+/** 读旧配置；文件不存在或 JSON 损坏时返回空配置。 */
 export function readConfig(): NcmConfig {
   const path = configPath()
   if (!existsSync(path)) return { ...EMPTY }
@@ -51,8 +55,14 @@ export function readConfig(): NcmConfig {
   }
 }
 
-/** 写配置：先建目录，再写文件，最后收紧权限到 600。 */
-export function writeConfig(config: NcmConfig): void {
+/**
+ * 写旧配置时的输入形状：`cookie` 可以省略——迁移成功后会把这个键整个删掉，
+ * 而不是留一个空串。`readConfig()` 对缺键按未登录处理。
+ */
+export type LegacyConfigInput = Omit<NcmConfig, 'cookie'> & { readonly cookie?: string }
+
+/** 写旧配置：先建目录，再写文件，最后收紧权限到 600。 */
+export function writeConfig(config: LegacyConfigInput): void {
   const path = configPath()
   mkdirSync(dirname(path), { recursive: true })
   writeFileSync(path, JSON.stringify(config, null, 2), { encoding: 'utf8', mode: 0o600 })
@@ -63,25 +73,14 @@ export function writeConfig(config: NcmConfig): void {
   }
 }
 
-/** 读当前 Cookie；未登录时返回空串。 */
-export function getCookie(): string {
-  return readConfig().cookie
-}
-
-/** 保存 Cookie（保留其他设置）。 */
-export function setCookie(cookie: string): void {
-  writeConfig({ ...readConfig(), cookie })
-}
-
-/** 读取非敏感设置。 */
-export function getSettings(): NcmSettingsDTO {
+/**
+ * 删掉旧文件里的整个 `cookie` 键（保留偏好），避免迁移后明文凭证继续留在磁盘上。
+ * 文件不存在或键本来就不存在时不写文件。
+ */
+export function stripLegacyCookie(): void {
+  const path = configPath()
+  if (!existsSync(path)) return
   const config = readConfig()
-  return { showFollowStats: config.showFollowStats }
-}
-
-/** 保存非敏感设置（保留 Cookie）。 */
-export function setShowFollowStats(showFollowStats: boolean): NcmSettingsDTO {
-  const config = readConfig()
-  writeConfig({ ...config, showFollowStats })
-  return { showFollowStats }
+  if (config.cookie === '') return
+  writeConfig({ showFollowStats: config.showFollowStats })
 }

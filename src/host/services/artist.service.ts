@@ -33,7 +33,7 @@ import {
   searchArtists,
   setArtistFollow,
 } from '../api/artist.api.js'
-import { getCookie } from '../config.js'
+import { getCookie } from '../credentials.js'
 import { NotLoggedInError } from '../error/index.js'
 
 export { NotLoggedInError }

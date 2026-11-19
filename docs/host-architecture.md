@@ -13,8 +13,10 @@
 
 ```
 src/host/
-  index.ts              宿主入口：Cordis 插件三件套（name / inject / apply），注册全部路由
-  config.ts             登录凭证（Cookie）与设置的本地读写
+  index.ts              宿主入口：Cordis 插件三件套（name / inject / apply / Config），注册全部路由
+  credentials.ts        Cookie：dsh 官方凭据 seam + 内存缓存 + 旧数据迁移
+  preferences.ts        非敏感偏好：插件 Config / configEditor
+  config.ts             旧文件存储（仅迁移与降级兜底）
   error/                全部领域错误类型（api-error / auth-error / index barrel）
   api/                  上游接口封装层（按领域：common / auth / account / user / playlist / song / artist / comment / listen）
   services/             业务逻辑层（按领域拆分 + cache.ts 集中缓存）
@@ -147,12 +149,13 @@ index.ts → routes/* → services/* → api/* → utils/* → constants / types
 
 ---
 
-## 8. 配置与凭证（`config.ts`）
+## 8. 配置与凭证（`credentials.ts` / `preferences.ts` / `config.ts`）
 
-- **唯一落盘位置**：`$DSH_HOME/storages/dsh-netease-music/config.json`（`DSH_HOME` 优先，否则 `~/.dsh`）。
-- 目录递归创建、文件权限 **600**；JSON 损坏时回退空配置。
+- **Cookie 走 dsh 官方凭据 seam**：作为 `dsh-netease-music/ncm-cookie` 记录（`kind: 'grant'`，payload 里是 Cookie）读写，写路径只有 `modifyRecord` / `deleteRecord`。`ctx.credentials` 不存在时降级到旧文件。
+- **`getCookie()` 同步**：`apply` 时预读一次凭据到内存缓存；写操作异步，成功后更新缓存，失败回滚。
+- **偏好走插件 Config**：`showFollowStats` 通过 `ctx.configEditor.edit` 写回当前 profile 的插件配置；`Config` 是手写 Standard Schema 对象，不引入 zod / schemastery 依赖。无 configEditor 时降级到旧文件。
+- **`config.ts` 只做迁移与兜底**：旧文件 `$DSH_HOME/storages/dsh-netease-music/config.json` 迁移成功后抹掉 `cookie` 字段（保留偏好），不再留存明文；损坏 JSON 回退空配置，权限 600。
 - **Cookie 只由宿主读写**，浏览器侧永远拿不到完整 Cookie（安全边界）。
-- 非敏感设置（如 `showFollowStats`）与 Cookie 同文件存储，`getSettings` / `setShowFollowStats` 只暴露非敏感字段。
 
 ---
 
@@ -175,6 +178,6 @@ index.ts → routes/* → services/* → api/* → utils/* → constants / types
 | 请求封装 | `client/utils/request.ts`（Envelope 解包） | `host/utils/request.ts`（HTTP + Set-Cookie） |
 | 错误 | `ApiError`（Envelope code） | `error/*`（领域异常）+ `toFailure` |
 | 缓存 | 无（纯前端） | `services/cache.ts`（me/歌单/搜索） |
-| 凭证 | 不接触 | `config.ts`（Cookie 落盘，600） |
+| 凭证 | 不接触 | `credentials.ts`（官方凭据记录，同步内存读）；`config.ts` 仅迁移/兜底 |
 
 > 接口的逐条对照（浏览器 `/api/ncm/*` ↔ 宿主上游 `music.163.com` 路径）见 [api-reference.md](./api-reference.md)。

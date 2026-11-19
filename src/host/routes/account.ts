@@ -43,8 +43,8 @@ export function createAccountRouter(logger: Logger): HostRoute[] {
     getRoute(HostApiPath.AuthStatus, () =>
       run(logger, 'auth-status', async () => ok(await getAuthStatus())),
     ),
-    postRoute(HostApiPath.Logout, () => {
-      logout()
+    postRoute(HostApiPath.Logout, async () => {
+      await logout()
       return ok({ loggedIn: false })
     }),
     getRoute(HostApiPath.Me, () => run(logger, 'me', async () => ok(await getMe()))),

@@ -12,7 +12,7 @@ import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
 import { ok } from '../utils/response.js'
 import { badRequest, route, type HostRoute } from './shared.js'
-import { getSettings, setShowFollowStats } from '../config.js'
+import { getSettings, setShowFollowStats } from '../preferences.js'
 
 /** 组装设置路由。 */
 export function createSettingsRouter(_logger: Logger): HostRoute[] {
@@ -23,7 +23,7 @@ export function createSettingsRouter(_logger: Logger): HostRoute[] {
       if (typeof body.showFollowStats !== 'boolean') {
         return badRequest('缺少 showFollowStats 参数')
       }
-      return ok(setShowFollowStats(body.showFollowStats))
+      return ok(await setShowFollowStats(body.showFollowStats))
     }),
   ]
 }
