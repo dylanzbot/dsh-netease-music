@@ -1,7 +1,7 @@
 /* 歌单详情页（参考网易云 PC 网页的歌单页结构）。 */
 
-import { useCallback, useEffect, useState } from 'react'
 import type { NcmMeDTO, NcmPlaylistCardDTO as NcmPlaylistCardData, NcmSongDTO } from '../../../types/index.js'
+import { useCallback, useEffect, useState } from 'react'
 import { getPlaylistSongs, setPlaylistSubscribed } from '../../api/playlist.api.js'
 import { useAsync } from '../../hooks/use-async.js'
 import { NcmPlayIcon } from '../../components/base/icons.js'

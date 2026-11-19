@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import type { NcmSongDTO } from '../../src/types/index.js'
+import type { NcmSongDTO, SongUrlResultDTO } from '../../src/types/index.js'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getSongUrl } from '../../src/client/api/song.api.js'
 import { playerNotice, playSongs } from '../../src/client/player/engine.js'
@@ -18,7 +18,7 @@ vi.mock('../../src/client/api/comment.api.js', () => ({
 const getSongUrlMock = vi.mocked(getSongUrl)
 
 function makeSong(id: number): NcmSongDTO {
-  return { id, name: `song-${id}`, durationMs: 60_000, fee: 0, artists: [], album: '' } as NcmSongDTO
+  return { id, name: `song-${id}`, durationMs: 60_000, fee: 0, artists: [], album: '' } as unknown as NcmSongDTO
 }
 
 describe('S1：快速切歌的代次保护', () => {
@@ -42,7 +42,7 @@ describe('S1：快速切歌的代次保护', () => {
       return new Promise<void>((_resolve, reject) => pending.push({ reject }))
     })
 
-    let resolveFirstUrl!: (value: { url: string; br: number; type: string; level: string }) => void
+    let resolveFirstUrl!: (value: SongUrlResultDTO) => void
     getSongUrlMock
       .mockImplementationOnce(
         () =>
@@ -50,12 +50,12 @@ describe('S1：快速切歌的代次保护', () => {
             resolveFirstUrl = resolve
           }),
       )
-      .mockResolvedValueOnce({ url: 'https://x/b.mp3', br: 320000, type: 'mp3', level: 'exhigh' })
+      .mockResolvedValueOnce({ url: 'https://x/b.mp3', br: 320000, type: 'mp3', size: 1, level: 'exhigh' })
 
     playSongs([makeSong(1)])
     // 等 A 拿到 url 并进入未完成的 play()
     await vi.waitFor(() => expect(getSongUrlMock).toHaveBeenCalledTimes(1))
-    resolveFirstUrl({ url: 'https://x/a.mp3', br: 320000, type: 'mp3', level: 'exhigh' })
+    resolveFirstUrl({ url: 'https://x/a.mp3', br: 320000, type: 'mp3', size: 1, level: 'exhigh' })
     await vi.waitFor(() => expect(playSpy).toHaveBeenCalledTimes(1))
 
     // 此时 B 切歌：第二次 play() 会打断 A 尚未完成的 play()

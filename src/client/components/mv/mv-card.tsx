@@ -1,7 +1,7 @@
 /* MV 卡片（点击后在原地变成内联 `<video>` 播放器）。 */
 
-import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
 import type { NcmMvCardDTO as NcmMvCardData, NcmMvDetailDTO } from '../../../types/index.js'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { getMvDetail } from '../../api/artist.api.js'
 import { formatCount, formatDuration } from '../../utils/format.js'
 import { retryMessage } from '../../constants/message.js'
@@ -238,10 +238,8 @@ export function NcmMvCard({ mv, playing, onRequestPlay, onStop, onNotice }: NcmM
     if (video !== null) video.playbackRate = next
   }
 
-  /** MV 下载已停用：保留空函数维持 controls 的 prop 契约，原实现见下方注释。 */
-  const downloadMv = () => {}
   /*
-  // 原 MV 下载实现（已注释停用，恢复时取消本块注释并删掉上面的空函数）：
+  // 原 MV 下载实现（已注释停用，恢复时取消本块注释）：
   const downloadMv = () => {
     const target = detail !== null && quality !== null ? detail.urls[quality] : undefined
     if (target === undefined) {
@@ -384,7 +382,6 @@ export function NcmMvCard({ mv, playing, onRequestPlay, onStop, onNotice }: NcmM
             onChangeSpeed={changeSpeed}
             onTogglePip={() => void togglePip()}
             onToggleFullscreen={toggleFullscreen}
-            onDownload={downloadMv}
             onToggleMenu={(next) => setMenu(next)}
             onRevealVolume={revealVolume}
             onScheduleHideVolume={scheduleHideVolume}

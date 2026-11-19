@@ -1,7 +1,7 @@
 /* 中间主面板区的网易云音乐 UI。 */
 
-import { useCallback, useEffect, useRef, useState } from 'react'
 import type { NcmAlbumCardDTO, NcmMeDTO, NcmPlaylistCardDTO, NcmRelationKindVO, NcmSettingsDTO, NcmSongDTO } from '../types/index.js'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getAuthStatus, getMe, logout as requestLogout } from './api/account.api.js'
 import { getSettings } from './api/settings.api.js'
 import { getMyPlaylists, getPlaylistSongs } from './api/playlist.api.js'

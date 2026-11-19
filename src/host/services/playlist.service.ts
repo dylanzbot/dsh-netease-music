@@ -1,5 +1,5 @@
 /**
- * 歌单业务逻辑：歌单详情（歌曲）、收藏 / 取消收藏、「我的」歌单切片。
+ * 歌单业务逻辑：歌单详情（歌曲）、收藏 / 取消收藏、「我的」歌单。
  *
  * @module @dylanzbot/dsh-netease-music/host/services/playlist
  */
@@ -29,7 +29,7 @@ export async function subscribePlaylist(id: number, subscribed: boolean): Promis
 }
 
 /**
- * 「我的」页面的歌单切片（只含歌单，不含资料 / 会员 / 徽章 / 听歌统计）。
+ * 「我的」页面的歌单（只含歌单，不含资料 / 会员 / 徽章 / 听歌统计）。
  * 相比 getMe 只打一次 /api/user/playlist，不重复请求资料、VIP、徽章、听歌足迹。
  */
 export async function getMyPlaylists(): Promise<NcmMyPlaylistsDTO> {

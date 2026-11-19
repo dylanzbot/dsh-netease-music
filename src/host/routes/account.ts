@@ -13,11 +13,10 @@
  * @module @dylanzbot/dsh-netease-music/host/routes/account
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
 import { ok } from '../utils/response.js'
 import {
-  badRequest,
   // bodyString, // Cookie 登录已禁用
   getRoute,
   postRoute,

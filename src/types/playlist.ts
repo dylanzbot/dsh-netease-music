@@ -24,7 +24,7 @@ export interface NcmPlaylistCardDTO {
   readonly description: string
 }
 
-/** 「我的」页面的歌单切片（只含歌单，不含资料 / 会员 / 徽章 / 听歌统计）。 */
+/** 「我的」页面的歌单（只含歌单，不含资料 / 会员 / 徽章 / 听歌统计）。 */
 export interface NcmMyPlaylistsDTO {
   readonly liked: NcmPlaylistCardDTO | null
   readonly playlists: readonly NcmPlaylistCardDTO[]

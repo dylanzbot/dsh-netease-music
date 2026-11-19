@@ -7,7 +7,8 @@
  * @module @dylanzbot/dsh-netease-music/host/routes
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
+import type { HostRoute } from './shared.js'
 import { createAccountRouter } from './account.js'
 import { createArtistRouter } from './artist.js'
 import { createAuthRouter } from './auth.js'
@@ -17,7 +18,6 @@ import { createRelationRouter } from './relation.js'
 import { createSearchRouter } from './search.route.js'
 import { createSettingsRouter } from './settings.route.js'
 import { createSongRouter } from './song.route.js'
-import type { HostRoute } from './shared.js'
 
 /**
  * 组装全部宿主路由。

@@ -9,7 +9,7 @@
  * @module @dylanzbot/dsh-netease-music/host/routes/song
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
 import { ok } from '../utils/response.js'
 import { badRequest, getRoute, intParam, postRoute, requirePositiveId, run, type HostRoute } from './shared.js'

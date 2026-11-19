@@ -29,7 +29,7 @@ beforeEach(() => {
   getCookieMock.mockReturnValue('MUSIC_U=test')
   fetchSongUrlByLevelMock.mockResolvedValue({ url: 'https://x', br: 320000, type: 'mp3', size: 1, level: 'exhigh' })
   fetchLikedSongIdsMock.mockResolvedValue([1, 2])
-  setSongLikeMock.mockResolvedValue({ liked: true })
+  setSongLikeMock.mockResolvedValue(undefined)
 })
 
 describe('requireCookie', () => {

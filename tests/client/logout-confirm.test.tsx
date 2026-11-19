@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
+import type { NcmMeDTO } from '../../src/types/index.js'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { NcmMeDTO } from '../../src/types/index.js'
 import { getAuthStatus, getMe, logout as requestLogout } from '../../src/client/api/account.api.js'
 import { getSettings } from '../../src/client/api/settings.api.js'
 import { NcmPanel } from '../../src/client/panel.js'
@@ -50,7 +50,7 @@ beforeEach(() => {
   vi.mocked(getAuthStatus).mockResolvedValue({ loggedIn: true })
   vi.mocked(getMe).mockResolvedValue(me)
   vi.mocked(getSettings).mockResolvedValue({ showFollowStats: true })
-  vi.mocked(requestLogout).mockResolvedValue(undefined)
+  vi.mocked(requestLogout).mockResolvedValue({ loggedIn: false })
 })
 
 describe('退出登录二次确认', () => {

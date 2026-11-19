@@ -7,7 +7,7 @@
  * @module @dylanzbot/dsh-netease-music/host/routes/shared
  */
 
-import type { Logger, RouteDefinition } from '../../types/cordis.js'
+import type { Logger, RouteDefinition } from '../../types/cordis-host.js'
 import {
   ERROR_CODE_BAD_REQUEST,
   ERROR_CODE_NOT_LOGGED_IN,

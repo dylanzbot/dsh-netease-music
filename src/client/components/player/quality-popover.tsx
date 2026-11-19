@@ -1,7 +1,7 @@
 /* 音质切换浮层（基于通用 NcmPopover）。 */
 
-import { useRef, useState } from 'react'
 import type { NcmQualityLevel, NcmStreamInfoVO, SongQualityOptionVO } from '../../../types/index.js'
+import { useRef, useState } from 'react'
 import { SONG_QUALITY_OPTIONS } from '../../api/song.api.js'
 import { formatStream, qualityLabel, qualityLabelOf } from '../../player/engine.js'
 import { NcmHintPopover } from '../base/hint-popover.js'

@@ -27,7 +27,7 @@
 
 - `src/host/` —— Node 侧：路由、服务、API 客户端、配置/Cookie 存储。一个源文件对应一个 `lib/host/*.js`，不打包。
 - `src/client/` —— 浏览器侧：React 组件、hooks、API 封装、CSS。全部打进 `lib/client.js`。
-- `src/constants/`、`src/utils/`、`src/types/` —— 两端共享；`src/types/cordis.ts` 是 peer 依赖的本地类型子集。
+- `src/constants/`、`src/utils/`、`src/types/` —— 两端共享；`src/types/cordis.ts` 是 cordis 类型的统一入口，核心类型（`Logger` / `Disposable` / `Context`）直接复用 peer 依赖 `@deepseek-ai/cordis` 的官方声明，两端独有的 dsh 服务切片分别在 `src/types/cordis-host.ts` / `src/types/cordis-client.ts`（用 declaration merging 给官方 `Context` 补服务键）。
 - `tests/client/`、`tests/host/` —— 与源码结构对应。
 - `scripts/build.mjs` —— 完整构建流程；`scripts/link-profile.sh` —— 本地安装并同步 `lib/`。
 - `lib/` —— 生成目录，已 gitignore。`docs/` —— 设计与发布笔记。`locale/en.json`、`icon.svg` —— 插件展示元信息。

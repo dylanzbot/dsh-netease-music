@@ -1,7 +1,7 @@
 /* 关注 / 粉丝弹窗（基于通用 NcmModal + NcmUserListItem + NcmConfirmModal）。 */
 
-import { useCallback, useEffect, useState } from 'react'
 import type { NcmRelationAction, NcmRelationKindVO, NcmRelationUserDTO } from '../../../types/index.js'
+import { useCallback, useEffect, useState } from 'react'
 import { getFans, getFollows } from '../../api/user.api.js'
 import { NcmConfirmModal } from '../base/confirm-modal.js'
 import { NcmModal } from '../base/modal.js'

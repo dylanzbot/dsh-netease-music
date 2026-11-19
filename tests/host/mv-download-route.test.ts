@@ -3,7 +3,7 @@
  * 恢复功能时把本块注释打开、并删掉文件末尾的占位 it.todo 即可。
  *
 import { describe, expect, it, vi } from 'vitest'
-import type { Logger } from '../../src/types/cordis.js'
+import type { Logger } from '../../src/types/cordis-host.js'
 import { HostApiPath } from '../../src/host/routes/paths.js'
 import { createArtistRouter } from '../../src/host/routes/artist.js'
 

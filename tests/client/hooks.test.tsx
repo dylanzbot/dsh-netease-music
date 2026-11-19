@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
+import type { NcmRelationUserDTO } from '../../src/types/index.js'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { NcmRelationUserDTO } from '../../src/types/index.js'
 import { relationAction } from '../../src/client/api/user.api.js'
 import { useAsync } from '../../src/client/hooks/use-async.js'
 import { usePagedList } from '../../src/client/hooks/use-paged-list.js'
@@ -23,6 +23,9 @@ const user: NcmRelationUserDTO = {
   vipType: 0,
   badgeCount: 0,
   followed: false,
+  mutual: false,
+  relationTime: 0,
+  mutualTime: 0,
 }
 
 beforeEach(() => {

@@ -1,7 +1,7 @@
 /* 底部固定音乐播放栏（QQ 音乐风格布局）。 */
 
-import { useRef, useState } from 'react'
 import type { NcmSongDTO } from '../../../types/index.js'
+import { useRef, useState } from 'react'
 import { useNcmPlayer } from '../../hooks/use-player.js'
 import {
   next,

@@ -4,12 +4,12 @@
  * 路由清单：
  *   GET  /api/ncm/playlist/detail     歌单详情（歌曲列表，id）
  *   POST /api/ncm/playlist/subscribe  收藏 / 取消收藏（id / subscribed）
- *   GET  /api/ncm/playlists           「我的」歌单切片（liked / 创建 / 收藏）
+ *   GET  /api/ncm/playlists           「我的」歌单（liked / 创建 / 收藏）
  *
  * @module @dylanzbot/dsh-netease-music/host/routes/playlist
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
 import { ok } from '../utils/response.js'
 import {

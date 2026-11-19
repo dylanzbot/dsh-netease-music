@@ -1,6 +1,5 @@
 /* 全局搜索框（带下拉结果）。 */
 
-import { useEffect, useRef, useState } from 'react'
 import type {
   NcmAlbumCardDTO,
   NcmArtistCardDTO,
@@ -9,6 +8,7 @@ import type {
   NcmPlaylistCardDTO,
   NcmSongDTO,
 } from '../../../types/index.js'
+import { useEffect, useRef, useState } from 'react'
 import { searchLibrary, searchMulti } from '../../api/song.api.js'
 import { NcmSearchIcon } from '../base/icons.js'
 import { NcmSearchPopover } from './search-popover.js'

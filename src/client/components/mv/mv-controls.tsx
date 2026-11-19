@@ -4,7 +4,6 @@ import { type ChangeEvent } from 'react'
 import { MV_QUALITY_LABEL, type MvQuality } from '../../utils/mv.js'
 import { formatClock } from '../../utils/format.js'
 import {
-  NcmDownloadIcon,
   NcmExitFullscreenIcon,
   NcmFullscreenIcon,
   NcmPauseIcon,
@@ -48,7 +47,6 @@ export interface NcmMvControlsProps {
   readonly onChangeSpeed: (speed: number) => void
   readonly onTogglePip: () => void
   readonly onToggleFullscreen: () => void
-  readonly onDownload: () => void
   /** 切换清晰度 / 倍速菜单（传目标菜单，null 关闭）。 */
   readonly onToggleMenu: (menu: MvControlMenu) => void
   /** 显示音量竖条（hover 进入图标）。 */
@@ -79,7 +77,6 @@ export function NcmMvControls({
   onChangeSpeed,
   onTogglePip,
   onToggleFullscreen,
-  onDownload,
   onToggleMenu,
   onRevealVolume,
   onScheduleHideVolume,

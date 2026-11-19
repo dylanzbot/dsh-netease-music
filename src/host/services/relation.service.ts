@@ -18,7 +18,7 @@ import { csrfFromCookie } from '../../utils/ncm.js'
 import { daysSince } from '../../utils/time.js'
 
 /** 读取当前登录用户 ID。 */
-async function currentUserId(cookie: string): Promise<number> {
+async function currentUserId(): Promise<number> {
   const me = await getMe()
   return me.profile.userId > 0 ? me.profile.userId : 0
 }
@@ -53,16 +53,16 @@ async function enrichUsers(
 /** 我关注的用户列表（带关注天数）。 */
 export async function getFollows(limit = 30, offset = 0): Promise<NcmRelationListDTO> {
   const cookie = getCookie()
-  const uid = await currentUserId(cookie)
+  const uid = await currentUserId()
   if (uid <= 0) return { users: [], more: false }
-  const { users, more } = await fetchFollows(uid, cookie, limit, offset)
+  const { users, more } = await fetchFollows(cookie, limit, offset)
   return { users: await enrichUsers(users, cookie), more }
 }
 
 /** 粉丝列表（带互关天数）。 */
 export async function getFans(limit = 30, offset = 0): Promise<NcmRelationListDTO> {
   const cookie = getCookie()
-  const uid = await currentUserId(cookie)
+  const uid = await currentUserId()
   if (uid <= 0) return { users: [], more: false }
   const { users, more } = await fetchFans(uid, cookie, limit, offset)
   return { users: await enrichUsers(users, cookie), more }

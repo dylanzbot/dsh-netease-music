@@ -9,7 +9,7 @@
  * @module @dylanzbot/dsh-netease-music/host/routes/auth
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
 import { ERROR_CODE_QR_EXPIRED } from '../../constants/error-code.js'
 import { HTTP_STATUS_GONE } from '../../constants/http.js'

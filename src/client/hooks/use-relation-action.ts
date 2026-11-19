@@ -1,7 +1,7 @@
 /* 关注 / 取关 / 移除粉丝的统一操作逻辑。 */
 
-import { useCallback, useState } from 'react'
 import type { NcmRelationAction, NcmRelationUserDTO } from '../../types/index.js'
+import { useCallback, useState } from 'react'
 import { relationAction } from '../api/user.api.js'
 import { MSG_OPERATION_FAILED } from '../constants/message.js'
 

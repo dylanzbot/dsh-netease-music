@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import type { NcmMvUrlsDTO } from '../../src/types/index.js'
+import { describe, expect, it } from 'vitest'
 import { MV_QUALITIES, MV_QUALITY_LABEL, availableMvQualities, pickDefaultMvQuality } from '../../src/client/utils/mv.js'
 
 describe('availableMvQualities', () => {

@@ -8,10 +8,10 @@
  * @module @dylanzbot/dsh-netease-music/host/routes/settings
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
 import { ok } from '../utils/response.js'
-import { badRequest, run, route, type HostRoute } from './shared.js'
+import { badRequest, route, type HostRoute } from './shared.js'
 import { getSettings, setShowFollowStats } from '../config.js'
 
 /** 组装设置路由。 */

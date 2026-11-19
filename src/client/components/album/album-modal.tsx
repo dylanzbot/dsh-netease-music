@@ -1,7 +1,7 @@
 /* 专辑弹窗（歌手页点击专辑卡片时打开）。 */
 
-import { useEffect, useState } from 'react'
 import type { NcmAlbumCardDTO, NcmAlbumInfoDTO, NcmSongDTO } from '../../../types/index.js'
+import { useEffect, useState } from 'react'
 import { getAlbumDetail } from '../../api/artist.api.js'
 import { formatDate } from '../../utils/format.js'
 import { NcmPlayIcon } from '../base/icons.js'

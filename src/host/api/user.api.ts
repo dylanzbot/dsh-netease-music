@@ -155,7 +155,6 @@ function mapRelationUser(raw: Record<string, unknown>, fallback: Partial<NcmRela
  * followTime、mutualFollowDay，是「关注 XX 天」最准确的来源。
  */
 export async function fetchFollows(
-  userId: number,
   cookie: string,
   limit = 30,
   offset = 0,

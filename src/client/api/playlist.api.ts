@@ -1,6 +1,6 @@
 /* 歌单接口（浏览器侧）。 */
 
-import type { NcmMyPlaylistsDTO, NcmPlaylistCardDTO, NcmSongDTO } from '../../types/index.js'
+import type { NcmMyPlaylistsDTO, NcmSongDTO } from '../../types/index.js'
 import { request } from '../utils/request.js'
 
 /** 歌单接口路径。 */
@@ -9,7 +9,7 @@ export enum PlaylistApiPath {
   Detail = '/api/ncm/playlist/detail',
   /** 收藏 / 取消收藏歌单。 */
   Subscribe = '/api/ncm/playlist/subscribe',
-  /** 「我的」页面的歌单切片（轻量，不含资料 / 会员等）。 */
+  /** 「我的」页面的歌单（轻量，不含资料 / 会员等）。 */
   MyPlaylists = '/api/ncm/playlists',
 }
 

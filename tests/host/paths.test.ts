@@ -27,7 +27,7 @@ describe('HTTP 路径契约', () => {
   })
 
   it('所有浏览器侧路径都能在宿主侧找到对应注册', () => {
-    const hostPaths = new Set(Object.values(HostApiPath))
+    const hostPaths = new Set<string>(Object.values(HostApiPath))
     const missing = clientPaths.filter((path) => !hostPaths.has(path))
     expect(missing).toEqual([])
   })

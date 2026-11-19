@@ -1,5 +1,5 @@
+import type { Logger } from '../../src/types/cordis-host.js'
 import { describe, expect, it, vi } from 'vitest'
-import type { Logger } from '../../src/types/cordis.js'
 import { NotLoggedInError } from '../../src/host/error/index.js'
 import { QrSessionExpiredError } from '../../src/host/error/auth-error.js'
 import { checkQrLogin, startQrLogin } from '../../src/host/services/auth.service.js'
@@ -18,7 +18,7 @@ vi.mock('../../src/host/services/relation.service.js', () => ({
   doRelationAction: vi.fn(),
 }))
 
-const logger: Logger = { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() }
+const logger = { name: 'test', info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() } as unknown as Logger
 
 function routeOf(routes: ReturnType<typeof createAuthRouter>, path: string) {
   const found = routes.find((item) => item.def.path === path)

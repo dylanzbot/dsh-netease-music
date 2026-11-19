@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
+import type { NcmSongDTO } from '../../src/types/index.js'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import type { NcmSongDTO } from '../../src/types/index.js'
 import { NcmSongTag } from '../../src/client/components/base/tags.js'
 
 const vipSong = { id: 1, fee: 1 } as NcmSongDTO

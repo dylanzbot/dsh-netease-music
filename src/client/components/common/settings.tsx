@@ -1,7 +1,7 @@
 /* 网易云音乐插件设置面板。 */
 
-import { useEffect, useState } from 'react'
 import type { NcmSettingsDTO } from '../../../types/index.js'
+import { useEffect, useState } from 'react'
 import { getSettings, saveSettings } from '../../api/settings.api.js'
 import { buildLogExport, downloadLogs } from '../../utils/logger.js'
 import './settings.css'

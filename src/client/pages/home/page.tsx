@@ -1,6 +1,5 @@
 /* 「首页」（发现音乐）。 */
 
-import { useCallback } from 'react'
 import type {
   NcmAlbumCardDTO,
   NcmArtistCardDTO,
@@ -8,6 +7,7 @@ import type {
   NcmProfileDTO,
   NcmSongDTO,
 } from '../../../types/index.js'
+import { useCallback } from 'react'
 import { getDiscover } from '../../api/song.api.js'
 import { useAsync } from '../../hooks/use-async.js'
 import { NcmPlaylistCard } from '../../components/playlist/playlist-card.js'

@@ -7,11 +7,11 @@
  * @module @dylanzbot/dsh-netease-music/host/config
  */
 
+import type { NcmSettingsDTO } from '../types/index.js'
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { PLUGIN_ID } from '../constants/plugin.js'
-import type { NcmSettingsDTO } from '../types/index.js'
 
 /** 配置文件结构。后续接搜索/播放时再扩展字段。 */
 export interface NcmConfig {

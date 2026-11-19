@@ -1,8 +1,8 @@
 /* 订阅播放器状态的 React Hook。 */
 
+import type { NcmPlayerStateVO } from '../../types/player.js'
 import { useEffect, useState } from 'react'
 import { getPlayerState, subscribePlayer } from '../player/engine.js'
-import type { NcmPlayerStateVO } from '../../types/player.js'
 
 /** 读取播放器状态，并在引擎变化时自动重渲染。 */
 export function useNcmPlayer(): NcmPlayerStateVO {

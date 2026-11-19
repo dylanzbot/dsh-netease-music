@@ -8,8 +8,8 @@
  * @module @dylanzbot/dsh-netease-music/host/services/cache
  */
 
-import { createHash } from 'node:crypto'
 import type { NcmLibrarySearchDTO, NcmMeDTO, NcmSongDTO } from '../../types/index.js'
+import { createHash } from 'node:crypto'
 
 /**
  * 用户维度标识：用 Cookie 的短哈希，不直接把明文 Cookie 当 Map 键存内存。

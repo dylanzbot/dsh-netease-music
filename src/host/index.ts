@@ -12,8 +12,7 @@
  * @module @dylanzbot/dsh-netease-music
  */
 
-import type { ConnectionService, Disposer, Logger, PluginContext } from '../types/cordis.js'
-import { SERVICE_CONNECTION } from '../constants/dsh-service.js'
+import type { Context } from '../types/cordis-host.js'
 import { PLUGIN_ID } from '../constants/plugin.js'
 import { createHostRouters } from './routes/index.js'
 
@@ -24,18 +23,18 @@ export const name = PLUGIN_ID
  * 宿主侧依赖的 dsh 服务名列表。
  * `connection` 是 dsh 的 HTTP 通道路由层，浏览器半侧通过它访问 /api/ncm/*。
  */
-export const inject = [SERVICE_CONNECTION] as const
+export const inject = ['connection'] as const
 
 /**
  * 宿主半侧的入口函数，dsh 会在启动时调用它。
  * @param ctx - dsh 给的宿主插件 context。
  */
-export function apply(ctx: PluginContext): void {
+export function apply(ctx: Context): void {
   const logger = ctx.logger(PLUGIN_ID)
 
   // 等 connection 服务就位后注册路由；scope 是带作用域的 child context。
-  ctx.inject([SERVICE_CONNECTION], (scope) => {
-    const connection = scope.get<ConnectionService>(SERVICE_CONNECTION)
+  ctx.inject(['connection'], (scope) => {
+    const connection = scope.get('connection')
     const register = connection?.fetch?.register
 
     // 旧版 dsh 没有 fetch registry 时静默降级：面板还能渲染，只是拿不到数据。
@@ -63,5 +62,5 @@ export function apply(ctx: PluginContext): void {
   })
 }
 
-/** 重导出宿主类型，方便单测和诊断。 */
-export type { Disposer, Logger } from '../types/cordis.js'
+/** 重导出官方类型，方便单测和诊断。 */
+export type { Disposable, Logger } from '../types/cordis-host.js'

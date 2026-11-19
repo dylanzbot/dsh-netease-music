@@ -7,7 +7,6 @@
  * @module @dylanzbot/dsh-netease-music/constants
  */
 
-export * from './dsh-service.js'
 export * from './error-code.js'
 export * from './http.js'
 export * from './ncm.js'

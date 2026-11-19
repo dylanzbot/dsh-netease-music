@@ -1,7 +1,7 @@
 /* 「歌手」列表页。 */
 
-import { useCallback, useEffect, useRef, useState } from 'react'
 import type { NcmArtistCardDTO } from '../../../types/index.js'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getTopArtists, searchArtists } from '../../api/artist.api.js'
 import { usePagedList } from '../../hooks/use-paged-list.js'
 import { NcmSearchIcon } from '../../components/base/icons.js'

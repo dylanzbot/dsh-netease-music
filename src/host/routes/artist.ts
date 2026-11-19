@@ -17,20 +17,8 @@
  * @module @dylanzbot/dsh-netease-music/host/routes/artist
  */
 
-import type { Logger } from '../../types/cordis.js'
+import type { Logger } from '../../types/cordis-host.js'
 import { HostApiPath } from './paths.js'
-import {
-  ERROR_CODE_BAD_REQUEST,
-  ERROR_CODE_UPSTREAM,
-} from '../../constants/error-code.js'
-import {
-  CONTENT_TYPE_OCTET_STREAM,
-  HEADER_CACHE_CONTROL,
-  HEADER_CONTENT_DISPOSITION,
-  HEADER_CONTENT_TYPE,
-  HTTP_STATUS_BAD_GATEWAY,
-} from '../../constants/http.js'
-import { PLUGIN_ID } from '../../constants/plugin.js'
 import {
   followArtist,
   getAlbumDetail,
@@ -42,13 +30,7 @@ import {
   getTopArtists,
   searchArtist,
 } from '../services/artist.service.js'
-import { fail, ok } from '../utils/response.js'
-import {
-  cappedBody,
-  isAllowedMvUrl,
-  MV_DOWNLOAD_MAX_BYTES,
-  MV_DOWNLOAD_TIMEOUT_MS,
-} from '../utils/mv-proxy.js'
+import { ok } from '../utils/response.js'
 import {
   badRequest,
   getRoute,
@@ -56,7 +38,6 @@ import {
   postRoute,
   requireKeyword,
   requirePositiveId,
-  route,
   run,
   type HostRoute,
 } from './shared.js'

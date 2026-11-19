@@ -10,7 +10,6 @@
  * @module @dylanzbot/dsh-netease-music/host/services/account
  */
 
-import { NotLoggedInError } from '../error/index.js'
 // InvalidCookieError 仅用于已注释的 Cookie 登录，恢复时取消注释：
 // import { InvalidCookieError, NotLoggedInError } from '../error/index.js'
 import type {
@@ -19,6 +18,7 @@ import type {
   NcmMeDTO,
   NcmProfileDTO,
 } from '../../types/index.js'
+import { NotLoggedInError } from '../error/index.js'
 import {
   NcmApiError,
   type RawProfile,

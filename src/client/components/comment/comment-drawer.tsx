@@ -1,7 +1,7 @@
 /* 歌曲评论抽屉（基于通用 NcmDrawer）。 */
 
-import { useCallback, useEffect, useRef, useState } from 'react'
 import type { NcmCommentDTO, NcmSongDTO } from '../../../types/index.js'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { deleteComment, getComments, likeComment, replyComment } from '../../api/comment.api.js'
 import { relationAction } from '../../api/user.api.js'
 import { renderCommentContent } from '../../utils/emoji.js'

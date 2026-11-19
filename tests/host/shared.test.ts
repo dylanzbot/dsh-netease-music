@@ -1,7 +1,7 @@
+import type { Logger } from '../../src/types/cordis-host.js'
 import { describe, expect, it, vi } from 'vitest'
 import { PLUGIN_ID } from '../../src/constants/plugin.js'
 import { InvalidCookieError, NotLoggedInError } from '../../src/host/error/index.js'
-import type { Logger } from '../../src/types/cordis.js'
 import {
   badRequest,
   bodyNumber,
@@ -18,7 +18,7 @@ import {
 import { ok } from '../../src/host/utils/response.js'
 
 function makeLogger(): Logger {
-  return { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() }
+  return { name: 'test', info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() } as unknown as Logger
 }
 
 describe('toFailure / badRequest', () => {

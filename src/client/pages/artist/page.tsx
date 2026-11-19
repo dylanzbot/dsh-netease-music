@@ -1,7 +1,7 @@
 /* 歌手详情页。 */
 
-import { useCallback, useEffect, useState } from 'react'
 import type { NcmAlbumCardDTO, NcmMvCardDTO, NcmSongDTO } from '../../../types/index.js'
+import { useCallback, useEffect, useState } from 'react'
 import {
   getAlbumDetail,
   getArtistAlbums,
