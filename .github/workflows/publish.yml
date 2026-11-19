@@ -1,4 +1,5 @@
 # 发 npm 流水线：由 release-please 打出的 tag 触发（tag 驱动，非 push main 驱动）
+# 发布认证走 npm Trusted Publishing（OIDC），不再使用长期 NPM_TOKEN
 
 name: Publish to npm
 
@@ -11,6 +12,10 @@ on:
         description: '要发布的 tag 或分支（例如 v0.1.0）；留空则用当前分支'
         required: false
         type: string
+
+permissions:
+  contents: read
+  id-token: write # npm Trusted Publishing 需要 OIDC token
 
 concurrency:
   group: npm-publish-ncm
@@ -28,108 +33,51 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24 # Node 24 自带 npm 11.5.2+，满足 Trusted Publishing 要求
           cache: npm
-          registry-url: https://registry.npmjs.org
 
-      - name: Install deps
-        run: npm ci
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Test
-        run: npm test
-
-      - name: Build
-        run: npm run build
-
-      - name: Verify NPM_TOKEN present
+      # 发布前查一次 registry：已发布则跳过（幂等重跑），只有 E404 才继续发布。
+      # 网络错误 / 权限错误一律 fail closed，避免把真失败误判成"还没同步"。
+      - name: Check publication state
+        id: check
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "$NPM_TOKEN" ]; then
-            echo "::error::NPM_TOKEN secret 缺失。请在 仓库 → Settings → Secrets and variables → Actions 添加（npm 端 'Read and write' 权限）。"
-            exit 1
-          fi
-          echo "NPM_TOKEN 已配置（长度 ${#NPM_TOKEN}）。"
-
-      - name: Publish to npm
-        # 显式指定官方 registry + --access public（本项目为公开非 scoped 包）。
-        run: npm publish --access public --registry=https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # 用 registry 回读真实版本，而不是只喊一句"已发布"。
-      # 三种结果：
-      #   ① 等于 package.json 版本        → 真正发布成功 ✅
-      #   ② 0.0.0-stage                  → 包刚创建，真实版本进了 staged 队列待审批
-      #   ③ 查不到 / 版本对不上           → 真失败（token 权限、版本已存在、网络）
-      # 用「指数退避 + 总时长上限」轮询，覆盖 registry 最终一致的同步延迟。
-      - name: Verify published version
+          REGISTRY: https://registry.npmjs.org
         run: |
           set -euo pipefail
           PKG="$(node -p "require('./package.json').name")"
-          EXPECTED="$(node -p "require('./package.json').version")"
-          REGISTRY="https://registry.npmjs.org"
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "包名：${PKG}   版本：${VERSION}"
 
-          echo "包名：${PKG}"
-          echo "期望版本：${EXPECTED}"
+          if output="$(npm view "${PKG}@${VERSION}" version --registry="${REGISTRY}" 2>&1)"; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "✅ ${PKG}@${VERSION} 已在 registry，跳过本次发布"
+          elif grep -Eq '^npm (ERR!|error) code E404$' <<< "$output"; then
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+            echo "registry 上查不到 ${PKG}@${VERSION}，继续发布"
+          else
+            echo "::error::npm view 失败（非 E404），中止发布："
+            echo "$output" >&2
+            exit 1
+          fi
 
-          DELAYS=(5 10 15 20 30 30 30 30)
-          TOTAL_WAIT=0
+      - name: Install deps
+        if: steps.check.outputs.already_published != 'true'
+        run: npm ci
 
-          for idx in "${!DELAYS[@]}"; do
-            i=$((idx + 1))
-            JSON="$(npm view "${PKG}" versions dist-tags --json --registry="${REGISTRY}" 2>/dev/null || true)"
+      - name: Typecheck
+        if: steps.check.outputs.already_published != 'true'
+        run: npm run typecheck
 
-            if [ -z "${JSON}" ]; then
-              STATE="missing"
-              DETAIL="registry 上查不到该包"
-            else
-              read -r STATE DETAIL <<<"$(printf '%s' "${JSON}" | node -e '
-                let s = "";
-                process.stdin.on("data", c => (s += c)).on("end", () => {
-                  let d;
-                  try { d = JSON.parse(s); } catch { console.log("missing\tJSON 解析失败"); return; }
-                  const latest = typeof d === "object" && d["dist-tags"] ? d["dist-tags"].latest : undefined;
-                  const versions = Array.isArray(d.versions) ? d.versions : [];
-                  const clean = versions.filter(v => v !== "0.0.0-stage");
-                  let state;
-                  if (!latest) state = "missing";
-                  else if (latest === "0.0.0-stage") state = "staged";
-                  else state = "published";
-                  console.log(state + "\tlatest=" + (latest || "<空>") + " versions=" + JSON.stringify(versions) + " 正式版本=" + JSON.stringify(clean));
-                });
-              '
-              )"
+      - name: Test
+        if: steps.check.outputs.already_published != 'true'
+        run: npm test
 
-              if [ "${STATE}" = "published" ] && printf '%s' "${DETAIL}" | grep -q "latest=${EXPECTED} "; then
-                echo "✅ 发布成功：${PKG}@${EXPECTED} 已是 dist-tags.latest"
-                echo "   ${DETAIL}"
-                exit 0
-              fi
-            fi
+      - name: Build
+        if: steps.check.outputs.already_published != 'true'
+        run: npm run build
 
-            if printf '%s' "${DETAIL}" | grep -q "\"${EXPECTED}\""; then
-              echo "✅ 发布成功：${PKG}@${EXPECTED} 已存在于 registry"
-              echo "   ${DETAIL}"
-              exit 0
-            fi
-
-            if [ "${STATE}" = "staged" ]; then
-              echo "::warning::${PKG} 目前只有占位版本 0.0.0-stage —— 说明包已创建，但 ${EXPECTED} 还在 staged 审批队列里。"
-              echo "   批准命令：npm login --registry=${REGISTRY} && npm stage list ${PKG} --registry=${REGISTRY} && npm stage approve <stage-id> --registry=${REGISTRY}"
-              exit 0
-            fi
-
-            echo "第 ${i}/${#DELAYS[@]} 次查询：${STATE} | ${DETAIL} —— ${DELAYS[$idx]}s 后重试"
-            sleep "${DELAYS[$idx]}"
-            TOTAL_WAIT=$((TOTAL_WAIT + DELAYS[idx]))
-          done
-
-          echo "::error::发布后校验失败：package.json=${EXPECTED}，registry 上读到 ${DETAIL:-<空>}。"
-          echo "   已等待约 ${TOTAL_WAIT}s 仍查不到，基本可排除同步延迟。"
-          echo "   排查方向：① NPM_TOKEN 是否带 Bypass 2FA；② 该版本是否已存在；③ registry 是否连得上。"
-          echo "   可去 Actions → Publish to npm → Run workflow，填 v${EXPECTED} 重跑校验。"
-          exit 1
+      - name: Publish to npm
+        if: steps.check.outputs.already_published != 'true'
+        # OIDC trusted publishing：id-token: write 提供身份令牌，npm 用它换取发布权限。
+        # --provenance 把同一令牌写进 tarball 的来源证明。
+        run: npm publish --provenance --access public --registry=https://registry.npmjs.org
